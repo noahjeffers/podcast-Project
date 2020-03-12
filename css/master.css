@@ -1,0 +1,13 @@
+.header
+{
+  background-color: black;
+  width: 100%;
+}
+
+
+.sidebar
+{
+  background-color: blue;
+  width: 60px;
+  float: left;
+}
