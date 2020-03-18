@@ -1,4 +1,5 @@
 <?php
+  session_start();
   require('connect.php');
 
 ?>
@@ -14,9 +15,11 @@
   width: 200px;
   border: 1px solid black;
 }
+
+.log{
+  flex-wrap: wrap;
+}
 </style>
-
-
   </head>
   <body>
     <div class="container">
@@ -24,6 +27,13 @@
 
       <div class="page-header">
         <h2>NETWORK NAME</h2>
+        <form class="log" action="login.php" method="post">
+          <label for="username">User Name: </label>
+          <input type="text" name="username" value="">
+          <label for="password">Password: </label>
+          <input type="text" name="password" value="">
+          <input type="submit" name="login" value="Log In">
+        </form>
       </div>
       <div class="wrapper">
         <ul class="creators">
@@ -50,8 +60,12 @@
             </li>
           </ul>
         </div>
-        <a href="login.php">Log In</a>
+
       </div>
+      <?php if(isset($_SESSION['username'])): ?>
+        <a href="profile.php">Profile</a>
+          <a href="logout.php">Log Out</a>      
+      <?php endif ?>
     </div>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
     integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

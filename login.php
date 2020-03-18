@@ -1,5 +1,22 @@
 <?php
+  session_start();
   require('connect.php');
+  $login = false;
+
+if(isset($_POST['username']))
+{
+  $username = $_POST["username"];
+  $password = $_POST["password"];
+  $query = "SELECT * FROM creator WHERE username = '$username' AND Password = '$password'";
+  $statement = $db->prepare($query);
+  $statement->execute();
+  $user=$statement->fetch();
+  $login =  true;
+  $_SESSION['username']=$user['UserName'];
+  $_SESSION['description']=$user['Description'];
+
+  header("Location: profile.php");
+}
 
 ?>
 <!DOCTYPE html>
@@ -9,13 +26,21 @@
     <title>Log In</title>
   </head>
   <body>
-    <div class="container">
-      <label for="username">User Name:</label>
-        <input type="text" name="username" value="">
-      <label for="password">Password: </label>
-        <input type="text" name="password" value="">
-        <button type="submit" name="submit">Log In</button>
-    </div>
-
+    <?php  if(isset($_SESSION['username'])):?>
+      <h2>You are already signed in</h2>
+      <a href="profile.php">Profile Page</a>
+      <a href="index.php">Home</a>
+    <?php else:?>
+      <p>Please try again</p>
+      <div class="container">
+        <form class="login" action="login.php" method="post">
+          <label for="username">User Name:</label>
+            <input type="text" name="username" value="">
+          <label for="password">Password: </label>
+            <input type="text" name="password" value="">
+            <button type="submit" name="submit">Log In</button>
+        </form>
+      </div>
+    <?php endif?>
   </body>
 </html>
