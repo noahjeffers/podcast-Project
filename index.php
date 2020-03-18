@@ -7,8 +7,12 @@
   //$query = "SELECT username FROM creator WHERE GenreID <> 1 ";
   $statement = $db->prepare($query);
   $statement->execute();
-  //$row = $statement -> fetch()
 
+  $query = "SELECT genre FROM genre WHERE genre <> 'undefined'  ";
+  $genrestatement = $db->prepare($query);
+  $genrestatement->execute();
+
+  $userID=$_SESSION['userid'];
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -46,29 +50,22 @@
               <h2>Error - No Creators found</h2>
           <?php else: ?>
             <?php foreach ($statement as $user): ?>
-              <li><?=$user['username']?></li>
+              <li> <a href="profile.php?creator=<?=$user['username']?>"> <?=$user['username']?></a></li>
               <?php endforeach ?>
           <?php endif ?>
         </ul>
       </div>
       <div class="">
         <div class="genre">
-          <ul class="">
-            <li class="list-group-item">
-              <a href="#">Comedy</a>
-            </li>
-            <li class="list-group-item">
-              <a href="#">News</a>
-            </li>
-            <li class="list-group-item">
-              <a href="#">History</a>
-            </li>
-            <li class="list-group-item">
-              <a href="#">Horror</a>
-            </li>
-            <li class="list-group-item">
-              <a href="#">Crime</a>
-            </li>
+          <ul class="genres">
+            <?php if ($genrestatement -> rowCount()<1):?>
+                <h2>Error - No Creators found</h2>
+            <?php else: ?>
+              <?php foreach ($genrestatement as $genre): ?>
+                <li><?=$genre['genre']?></li>
+
+                <?php endforeach ?>
+            <?php endif ?>
           </ul>
         </div>
 
@@ -76,6 +73,7 @@
       <?php if(isset($_SESSION['username'])): ?>
         <a href="profile.php">Profile</a>
           <a href="logout.php">Log Out</a>
+          <p><?= $userID?></p>
       <?php endif ?>
     </div>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"

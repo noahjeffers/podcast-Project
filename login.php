@@ -12,15 +12,17 @@ else {
   {
     $username = $_POST["username"];
     $password = $_POST["password"];
-    $query = "SELECT * FROM creator WHERE username = '$username' AND Password = '$password'";
+
+    $query = "SELECT UserID, UserName, Description FROM creator WHERE username = :username AND password = :password";
     $statement = $db->prepare($query);
+    $statement->bindValue(':username',$username);
+    $statement->bindValue(':password',$password);
     $statement->execute();
     $user=$statement->fetch();
-
+    $_SESSION['userid']=$user['UserID'];
     $_SESSION['username']=$user['UserName'];
     $_SESSION['description']=$user['Description'];
-
-    header("Location: profile.php");
+    //header("Location: profile.php");
   }
 
 }
