@@ -29,8 +29,6 @@
   </head>
   <body>
     <div class="container">
-
-
       <div class="page-header">
         <h2>NETWORK NAME</h2>
         <form class="log" action="login.php" method="post">
@@ -46,11 +44,8 @@
           <?php if ($statement -> rowCount()<1):?>
               <h2>Error - No Creators found</h2>
           <?php else: ?>
-              <?php foreach ($row as $user): ?>
-                <?php echo "console.log($user)" ?>
-              <div class="creator">
-                <h3><?=  $user?></h3>
-              </div>
+            <?php foreach($statement as $user): ?>
+                <li> <?= $user['username']?> </li>
             <?php endforeach ?>
           <?php endif ?>
         </ul>
