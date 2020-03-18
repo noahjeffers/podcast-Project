@@ -2,20 +2,27 @@
   session_start();
   require('connect.php');
   $login = false;
-
-if(isset($_POST['username']))
+if(isset($_SESSION['username']))
 {
-  $username = $_POST["username"];
-  $password = $_POST["password"];
-  $query = "SELECT * FROM creator WHERE username = '$username' AND Password = '$password'";
-  $statement = $db->prepare($query);
-  $statement->execute();
-  $user=$statement->fetch();
-  $login =  true;
-  $_SESSION['username']=$user['UserName'];
-  $_SESSION['description']=$user['Description'];
+  $login=true;
+  $note="You are already logged in under another account. Log out and try again.";
+}
+else {
+  if(isset($_POST['username']))
+  {
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+    $query = "SELECT * FROM creator WHERE username = '$username' AND Password = '$password'";
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $user=$statement->fetch();
 
-  header("Location: profile.php");
+    $_SESSION['username']=$user['UserName'];
+    $_SESSION['description']=$user['Description'];
+
+    header("Location: profile.php");
+  }
+
 }
 
 ?>
@@ -30,6 +37,9 @@ if(isset($_POST['username']))
       <h2>You are already signed in</h2>
       <a href="profile.php">Profile Page</a>
       <a href="index.php">Home</a>
+      <?php if($login==true); ?>
+        <p><?=$note?></p>
+        <a href="logout.php">Log Out</a>
     <?php else:?>
       <p>Please try again</p>
       <div class="container">

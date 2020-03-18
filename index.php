@@ -2,6 +2,12 @@
   session_start();
   require('connect.php');
 
+
+  $query = "SELECT username FROM creator";
+  $statement = $db->prepare($query);
+  $statement->execute();
+  $row = $statement -> fetch()
+
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -37,7 +43,16 @@
       </div>
       <div class="wrapper">
         <ul class="creators">
-
+          <?php if ($statement -> rowCount()<1):?>
+              <h2>Error - No Creators found</h2>
+          <?php else: ?>
+              <?php foreach ($row as $user): ?>
+                <?php echo "console.log($user)" ?>
+              <div class="creator">
+                <h3><?=  $user?></h3>
+              </div>
+            <?php endforeach ?>
+          <?php endif ?>
         </ul>
       </div>
       <div class="">
@@ -64,7 +79,7 @@
       </div>
       <?php if(isset($_SESSION['username'])): ?>
         <a href="profile.php">Profile</a>
-          <a href="logout.php">Log Out</a>      
+          <a href="logout.php">Log Out</a>
       <?php endif ?>
     </div>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
