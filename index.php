@@ -2,11 +2,12 @@
   session_start();
   require('connect.php');
 
-
-  $query = "SELECT username FROM creator";
+  $query = "SELECT username FROM creator ";
+  //$query = "SELECT username FROM creator WHERE username <> 'ADMIN' ";
+  //$query = "SELECT username FROM creator WHERE GenreID <> 1 ";
   $statement = $db->prepare($query);
   $statement->execute();
-  $row = $statement -> fetch()
+  //$row = $statement -> fetch()
 
 ?>
 <!DOCTYPE html>
@@ -44,9 +45,9 @@
           <?php if ($statement -> rowCount()<1):?>
               <h2>Error - No Creators found</h2>
           <?php else: ?>
-            <?php foreach($statement as $user): ?>
-                <li> <?= $user['username']?> </li>
-            <?php endforeach ?>
+            <?php foreach ($statement as $user): ?>
+              <li><?=$user['username']?></li>
+              <?php endforeach ?>
           <?php endif ?>
         </ul>
       </div>
