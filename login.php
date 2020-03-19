@@ -2,8 +2,7 @@
   session_start();
   require('connect.php');
   $login = false;
-if(isset($_SESSION['username']))
-{
+if(isset($_SESSION['username'])){
   $login=true;
   $note="You are already logged in under another account. Log out and try again.";
 }

@@ -2,7 +2,7 @@
   session_start();
   require('connect.php');
 
-  $query = "SELECT username FROM creator ";
+  $query = "SELECT username,userid FROM creator ";
   //$query = "SELECT username FROM creator WHERE username <> 'ADMIN' ";
   //$query = "SELECT username FROM creator WHERE GenreID <> 1 ";
   $statement = $db->prepare($query);
@@ -12,7 +12,12 @@
   $genrestatement = $db->prepare($query);
   $genrestatement->execute();
 
-  $userID=$_SESSION['userid'];
+  $podcastquery = "SELECT * FROM podcast";
+  $podcaststatement = $db->prepare($podcastquery);
+  $podcaststatement->execute();
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -59,7 +64,7 @@
         <div class="genre">
           <ul class="genres">
             <?php if ($genrestatement -> rowCount()<1):?>
-                <h2>Error - No Creators found</h2>
+                <h2>Error - No Genre found</h2>
             <?php else: ?>
               <?php foreach ($genrestatement as $genre): ?>
                 <li><?=$genre['genre']?></li>
@@ -70,10 +75,20 @@
         </div>
 
       </div>
+      <div class="Podcasts">
+        <?php if ($podcaststatement -> rowCount()<1):?>
+            <h2>Error - No Podcasts found</h2>
+        <?php else: ?>
+          <?php foreach ($podcaststatement as $podcast): ?>
+            <li><?=$podcast['Title']?></li>
+
+            <?php endforeach ?>
+        <?php endif ?>
+      </div>
+
       <?php if(isset($_SESSION['username'])): ?>
         <a href="profile.php">Profile</a>
           <a href="logout.php">Log Out</a>
-          <p><?= $userID?></p>
       <?php endif ?>
     </div>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
