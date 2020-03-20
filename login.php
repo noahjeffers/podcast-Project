@@ -2,15 +2,16 @@
   session_start();
   require('connect.php');
   $login = false;
+  $note="You are already logged in under another account. Log out and try again.";
 if(isset($_SESSION['username'])){
   $login=true;
-  $note="You are already logged in under another account. Log out and try again.";
 }
 else {
+  /// FILTER AND strtolower NEEDED/////////////////////////////////////////////////////////////////////////////////////
   if(isset($_POST['username']))
   {
-    $username = $_POST["username"];
-    $password = $_POST["password"];
+    $username = strtolower(filter_input(INPUT_POST,"username",FILTER_SANITIZE_SPECIAL_CHARS));
+    $password = $_POST["password"];//HASH Password?
 
     $query = "SELECT UserID, UserName, Description FROM creator WHERE username = :username AND password = :password";
     $statement = $db->prepare($query);
@@ -21,7 +22,7 @@ else {
     $_SESSION['userid']=$user['UserID'];
     $_SESSION['username']=$user['UserName'];
     $_SESSION['description']=$user['Description'];
-    //header("Location: profile.php");
+    //header("Location: index.php");
   }
 
 }

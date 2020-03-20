@@ -41,15 +41,25 @@
     <div class="container">
       <div class="page-header">
         <h2>NETWORK NAME</h2>
-        <form class="log" action="login.php" method="post">
-          <label for="username">User Name: </label>
-          <input type="text" name="username" value="">
-          <label for="password">Password: </label>
-          <input type="text" name="password" value="">
-          <input type="submit" name="login" value="Log In">
-        </form>
+        <?php if(!isset($_SESSION['username'])): ?>
+          <form class="log" action="login.php" method="post">
+            <label for="username">User Name: </label>
+            <input type="text" name="username" value="">
+            <label for="password">Password: </label>
+            <input type="text" name="password" value="">
+            <input type="submit" name="login" value="Log In">
+          </form>
+        <?php else : ?>
+          <?php if ($_SESSION['userid']=='9016'): ?>
+            <a href="adminhomepage.php">ADMIN</a>
+            <a href="logout.php">Log Out</a>
+          <?php else: ?>
+            <a href="profile.php?creator=<?=$_SESSION['username']?>">My Profile</a>
+            <a href="logout.php">Log Out</a>
+          <?php endif; ?>
+      <?php endif ?>
       </div>
-      <div class="wrapper">
+      <div class="">
         <ul class="creators">
           <?php if ($statement -> rowCount()<1):?>
               <h2>Error - No Creators found</h2>
@@ -60,35 +70,55 @@
           <?php endif ?>
         </ul>
       </div>
-      <div class="">
-        <div class="genre">
-          <ul class="genres">
-            <?php if ($genrestatement -> rowCount()<1):?>
-                <h2>Error - No Genre found</h2>
+      <div class="container">
+        <ul class="nav nav-tabs">
+          <?php if ($genrestatement -> rowCount()<1):?>
+              <h2>Error - No Genre found</h2>
+          <?php else: ?>
+            <?php foreach ($genrestatement as $genre): ?>
+              <li class"nav-item">
+                <a href="#"><?=$genre['genre']?></a>
+              </li>
+
+              <?php endforeach ?>
+          <?php endif ?>
+        </ul>
+        <!-- <li class="nav-item">
+          <a class="nav-link active" href="#">Active</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+      <div class=""> -->
+
+        <div class="Podcasts">
+          <h3>Most Recent Podcasts</h3>
+          <ul class="list-group">
+            <?php if ($podcaststatement -> rowCount()<1):?>
+                <h2>Error - No Podcasts found</h2>
             <?php else: ?>
-              <?php foreach ($genrestatement as $genre): ?>
-                <li><?=$genre['genre']?></li>
+              <?php foreach ($podcaststatement as $podcast): ?>
+                <li class="list-group-item">
+                  <a href="podcast.php?podcastid=<?=$podcast['PodcastID']?>"><?=$podcast['Title']?></a>
+                </li>
 
                 <?php endforeach ?>
             <?php endif ?>
           </ul>
         </div>
-
-      </div>
-      <div class="Podcasts">
-        <?php if ($podcaststatement -> rowCount()<1):?>
-            <h2>Error - No Podcasts found</h2>
-        <?php else: ?>
-          <?php foreach ($podcaststatement as $podcast): ?>
-            <li><?=$podcast['Title']?></li>
-
-            <?php endforeach ?>
-        <?php endif ?>
       </div>
 
       <?php if(isset($_SESSION['username'])): ?>
         <a href="profile.php">Profile</a>
           <a href="logout.php">Log Out</a>
+          <p><?=$_SESSION['userid']?></p>
       <?php endif ?>
     </div>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"

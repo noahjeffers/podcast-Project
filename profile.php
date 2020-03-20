@@ -3,30 +3,33 @@ require('connect.php');
 session_start();
 $creator = ' ';
 
-if (isset($_GET['creator'])) {
-  $creator = $_GET['creator'];
+if(!isset($_GET['creator'])){
+  header("Location: index.php");
+}
+
+$GETCreator = filter_input(INPUT_GET, 'creator', FILTER_SANITIZE_SPECIAL_CHARS);
+
+if(strtolower($GETCreator)=='admin'){
+  //header("Location: index.php");
+}
+else{
   $query = "SELECT username,userid FROM creator WHERE UserName = :creator ";
   $statement = $db->prepare($query);
-  $statement->bindValue(':creator',$creator);
+  $statement->bindValue(':creator',$GETCreator);
   $statement->execute();
   $user = $statement->fetch();
 }
-else{
-  //header("Location: index.php");
-}
-
 
 if(isset($_SESSION['username'])){
   $username=$_SESSION['username'];
 }
-$podcastquery = "SELECT title, description FROM Podcast WHERE podcastID LIKE  :something  ";
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Only loads the podcasts of the Creator supplied in the $_GET
+$podcastquery = "SELECT title, description,PodcastID FROM Podcast WHERE podcastID LIKE  :profilepodcast  ";
 $podcaststatement = $db->prepare($podcastquery);
-$other = $user['userid'];
-$something ='"'.$other.'%'.'"';
-$podcaststatement ->bindValue(':something',$something);
+$userWwildcard =$user['userid'].'%';
+$podcaststatement ->bindValue(':profilepodcast',$userWwildcard);
 $podcaststatement->execute();
-
-
 
 
  ?>
@@ -46,7 +49,11 @@ $podcaststatement->execute();
           <h2><?=$something?></h2>
       <?php else: ?>
         <?php foreach ($podcaststatement as $podcast): ?>
-          <li><?=$podcast['Title']?></li>
+          <li><?=$podcast['title']?></li>
+          <li><?=$podcast['description']?></li>
+          <li>
+            <a href="podcast.php?podcastid=<?=$podcast['PodcastID']?>"><?=$podcast['title']?></a>
+          </li>
 
           <?php endforeach ?>
       <?php endif ?>
