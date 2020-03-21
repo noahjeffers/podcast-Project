@@ -10,7 +10,7 @@ if(!isset($_GET['creator'])){
 $GETCreator = filter_input(INPUT_GET, 'creator', FILTER_SANITIZE_SPECIAL_CHARS);
 
 if(strtolower($GETCreator)=='admin'){
-  //header("Location: index.php");
+  header("Location: index.php");
 }
 else{
   $query = "SELECT username,userid FROM creator WHERE UserName = :creator ";
@@ -32,7 +32,7 @@ $podcaststatement ->bindValue(':profilepodcast',$userWwildcard);
 $podcaststatement->execute();
 
 
- ?>
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -42,21 +42,25 @@ $podcaststatement->execute();
   <body>
     <a href="index.php">Home</a>
     <p><?=$creator?></p>
-
+    <?php if($_SESSION['username']==$GETCreator):?>
+      <p>THIS IS YOUR PAGE</p>
+      <a href="editaccount.php">EDIT</a>
+    <?php endif ?>
     <div class="Podcasts">
-      <?php if ($podcaststatement -> rowCount()<1):?>
-          <h2>Error - No Podcasts found</h2>
-          <h2><?=$something?></h2>
-      <?php else: ?>
-        <?php foreach ($podcaststatement as $podcast): ?>
-          <li><?=$podcast['title']?></li>
-          <li><?=$podcast['description']?></li>
-          <li>
-            <a href="podcast.php?podcastid=<?=$podcast['PodcastID']?>"><?=$podcast['title']?></a>
-          </li>
+      <ul>
+        <?php if ($podcaststatement -> rowCount()<1):?>
+            <h2>Error - No Podcasts found</h2>
 
-          <?php endforeach ?>
-      <?php endif ?>
+        <?php else: ?>
+          <?php foreach ($podcaststatement as $podcast): ?>
+            <li>
+              <h5><a href="podcast.php?podcastid=<?=$podcast['PodcastID']?>"><?=$podcast['title']?></a></h5>
+              <p><?=$podcast['description']?></p>
+            </li>
+            <?php endforeach ?>
+        <?php endif ?>
+      </ul>
+
     </div>
   </body>
 </html>

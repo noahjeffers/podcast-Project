@@ -13,16 +13,19 @@ else {
     $username = strtolower(filter_input(INPUT_POST,"username",FILTER_SANITIZE_SPECIAL_CHARS));
     $password = $_POST["password"];//HASH Password?
 
-    $query = "SELECT UserID, UserName, Description FROM creator WHERE username = :username AND password = :password";
+    $query = "SELECT UserID, UserName, Description, Password FROM creator WHERE username = :username";
     $statement = $db->prepare($query);
-    $statement->bindValue(':username',$username);
-    $statement->bindValue(':password',$password);
+    $statement->bindValue(':username',$username);    
     $statement->execute();
     $user=$statement->fetch();
-    $_SESSION['userid']=$user['UserID'];
-    $_SESSION['username']=$user['UserName'];
-    $_SESSION['description']=$user['Description'];
-    //header("Location: index.php");
+    $userHashedPassword=$user['Password'];
+    if (password_verify($password,$userHashedPassword)) {
+      $_SESSION['userid']=$user['UserID'];
+      $_SESSION['username']=$user['UserName'];
+      $_SESSION['description']=$user['Description'];
+      //header("Location: index.php");
+    }
+
   }
 
 }

@@ -22,18 +22,16 @@ $genrestatement->execute();
         <input type="text" name="title" value="">
         <label for="description">Description:</label>
         <input type="text" name="description" value="">
-        <input type="submit" name="upload" value="Upload File">
-
         <div class="genres">
           <?php if ($genrestatement -> rowCount()<1):?>
               <h2>Error - No Genre found</h2>
           <?php else: ?>
             <?php foreach ($genrestatement as $genre): ?>
-
                 <input type="radio" id="<?=$genre['genre']?>" name="genre" value="<?=$genre['genre']?>">
                 <label for="<?=$genre['genre']?>"><?=$genre['genre']?></label>
               <?php endforeach ?>
           <?php endif ?>
+          <br><input type="submit" name="upload" value="Upload File">
         </div>
       </form>
     </div>
