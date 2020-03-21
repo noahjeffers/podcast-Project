@@ -13,16 +13,18 @@ else {
     $username = strtolower(filter_input(INPUT_POST,"username",FILTER_SANITIZE_SPECIAL_CHARS));
     $password = $_POST["password"];//HASH Password?
 
-    $query = "SELECT UserID, UserName, Description, Password FROM creator WHERE username = :username";
+    $query = "SELECT UserID, UserName, Description, Password, GenreID FROM creator WHERE username = :username";
     $statement = $db->prepare($query);
-    $statement->bindValue(':username',$username);    
+    $statement->bindValue(':username',$username);
     $statement->execute();
     $user=$statement->fetch();
     $userHashedPassword=$user['Password'];
+
     if (password_verify($password,$userHashedPassword)) {
       $_SESSION['userid']=$user['UserID'];
       $_SESSION['username']=$user['UserName'];
       $_SESSION['description']=$user['Description'];
+      $_SESSION['genreid']=$user['GenreID'];
       //header("Location: index.php");
     }
 
@@ -45,6 +47,7 @@ else {
       <?php if($login==true); ?>
         <p><?=$note?></p>
         <a href="logout.php">Log Out</a>
+        <!-- <p><?=$_SESSION['genreid']?></p> -->
     <?php else:?>
       <p>Please try again</p>
       <div class="container">

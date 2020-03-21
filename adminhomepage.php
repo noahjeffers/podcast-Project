@@ -10,7 +10,8 @@ if($_SESSION['userid']!='9016')
 
 
 
-
+// Add Genre Functionality
+// Delete User Account 
 
 ?>
 

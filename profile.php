@@ -50,7 +50,6 @@ $podcaststatement->execute();
       <ul>
         <?php if ($podcaststatement -> rowCount()<1):?>
             <h2>Error - No Podcasts found</h2>
-
         <?php else: ?>
           <?php foreach ($podcaststatement as $podcast): ?>
             <li>
