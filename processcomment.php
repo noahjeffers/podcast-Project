@@ -1,13 +1,28 @@
 <?php
+require('connect.php');
+session_start();
 //Posted from the Podcast page
 // inputs need to be sanitized
-$link = $_POST['link'];
-if(""==trim($_POST['name']))
-{
-  header("Location: $link");
-}
+  $link = $_POST['link'];
+  if(""==trim($_POST['name']))
+  {
+    header("Location: $link");
+  }
+  else {
+    //SANITZE
+    $commentName = $_POST['name'];
+    $commentContent =$_POST['content'];
+    $commentFK = $_POST['podcastID'];
+
+    $createCommentQuery= "INSERT INTO Comment(Name,Content,PodcastID) VALUES(:name,:content,:podcastID)";
+    $createCommentStatement = $db->prepare($createCommentQuery);
+    $createCommentStatement->bindValue(':name',$commentName);
+    $createCommentStatement->bindValue(':content', $commentContent);
+    $createCommentStatement->bindValue(':podcastID', $commentFK);
+    $createCommentStatement->execute();
 
 
+  }
 
 
 
@@ -21,5 +36,8 @@ if(""==trim($_POST['name']))
   <body>
     <a href=<?=$link?>>Link</a>
     <p><?=$link?></p>
+    <p><?=$commentName?></p>
+    <p><?=$commentContent?></p>
+    <p><?=$commentFK?></p>
   </body>
 </html>

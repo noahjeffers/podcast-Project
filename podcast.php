@@ -38,6 +38,7 @@ else{
         <label for="content">Comment: </label>
         <textarea name="content" rows="8" cols="80"></textarea>
         <input type="submit" name="submit" value="Post Comment">
+        <input type="hidden" name="podcastID" value="<?=$podcast['PodcastID']?>">
         <input type="hidden" name="link" value="podcast.php?podcastid=<?=$podcast['PodcastID']?>">
       </form>
       <ul class="comments">
@@ -48,6 +49,7 @@ else{
             <li>
               <small><?=$comments['CommentID'] ?></small>
               <p><?=$comments['Content']?></p>
+              <p>From: <?=$comments['Name']?></p>
             </li>
           <?php endforeach ?>
           <?php endif ?>

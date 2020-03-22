@@ -112,6 +112,7 @@ if($_POST){
           </div>
         </div>
         <input class="btn btn-primary " type="submit" name="submit" value="Update your Account">
+        <a class="btn btn-warning "href="profile.php?=creator=<?=$_SESSION['username']?>">Cancel</a>
       </form>
     </div>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"

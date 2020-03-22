@@ -1,7 +1,9 @@
 <?php
 session_start();
 require('connect.php');
-
+if(!isset($_SESSION['userid'])){
+  header('Location: Index.php');
+}
 $query = "SELECT genre FROM genre WHERE genre <> 'undefined'";
 $genrestatement = $db->prepare($query);
 $genrestatement->execute();
