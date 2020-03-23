@@ -28,6 +28,9 @@ if (isset($_GET['commentid'])&&isset($_GET['podcastid'])) {
       $deletestatement->execute();
       header("Location: $home");
     }
+    else {
+      $error=true;
+    }
   }
 }
 ?>

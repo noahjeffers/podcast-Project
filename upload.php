@@ -4,6 +4,7 @@ require('connect.php');
 if(!isset($_SESSION['userid'])){
   header('Location: Index.php');
 }
+//populate into a dropdown list in The Future////////////////////////////////////////////////////////////////
 $query = "SELECT genre FROM genre WHERE genre <> 'undefined'";
 $genrestatement = $db->prepare($query);
 $genrestatement->execute();

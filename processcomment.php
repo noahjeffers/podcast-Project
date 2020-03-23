@@ -14,12 +14,18 @@ session_start();
     $commentContent =$_POST['content'];
     $commentFK = $_POST['podcastID'];
 
+    //create redirect link
+    $return = "podcast.php?podcastid=".$commentFK;
+
     $createCommentQuery= "INSERT INTO Comment(Name,Content,PodcastID) VALUES(:name,:content,:podcastID)";
     $createCommentStatement = $db->prepare($createCommentQuery);
     $createCommentStatement->bindValue(':name',$commentName);
     $createCommentStatement->bindValue(':content', $commentContent);
     $createCommentStatement->bindValue(':podcastID', $commentFK);
     $createCommentStatement->execute();
+
+//  Redirect Back to the page that the comment was posted to
+    header("Location: $return");
   }
 
 

@@ -18,7 +18,8 @@ else{
   $commentstatement -> bindValue(':podcastID', $podcastID);
   $commentstatement -> execute();
   $creatorID = substr($podcastID,0,4);
-//  $comment = $commentstatement -> fetch();
+
+
 
 }
 ?>
@@ -30,6 +31,7 @@ else{
   </head>
   <body>
     <a href="index.php">Home</a>
+    <a href="#">Back to Profile</a>
     <p>filler content for now</p>
     <p><?=$podcast['PodcastID']?></p>
     <div class="container">

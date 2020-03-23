@@ -5,23 +5,29 @@ if(!isset($_SESSION['username'])){
   header("Location: index.php");
 }
 //Page Load
-$user = $_SESSION['username'];
-$query = "SELECT genre FROM genre ";
-$genrestatement = $db->prepare($query);
-$genrestatement->execute();
+if (!$_POST) {
+  $user = $_SESSION['username'];
+  $query = "SELECT genre FROM genre ";
+  $genrestatement = $db->prepare($query);
+  $genrestatement->execute();
 
-$currentGenreID=$_SESSION['genreid'];
-$query = "SELECT genre FROM genre WHERE GenreID = :genreID ";
-$secondgenrestatement = $db->prepare($query);
-$secondgenrestatement->bindValue(':genreID',$currentGenreID);
-$secondgenrestatement->execute();
-$currentGenre=$secondgenrestatement->fetch();
+  $currentGenreID=$_SESSION['genreid'];
+  $query = "SELECT genre FROM genre WHERE GenreID = :genreID ";
+  $secondgenrestatement = $db->prepare($query);
+  $secondgenrestatement->bindValue(':genreID',$currentGenreID);
+  $secondgenrestatement->execute();
+  $currentGenre=$secondgenrestatement->fetch();
+}
+
 
 
 
 //this page will deal with image upload
 //and updating the creator database
+
+
 if($_POST){
+
 
     $newUserName=filter_input(INPUT_POST,'username',FILTER_SANITIZE_SPECIAL_CHARS);
     $newDescription=filter_input(INPUT_POST,'description',FILTER_SANITIZE_SPECIAL_CHARS);
@@ -46,6 +52,7 @@ if($_POST){
     $_SESSION['username']=$newUserName;
     $_SESSION['description']=$newDescription;
     // Removes the Genre Radio Buttons on POST, Will have to look into it.
+
 }
 ?>
 <!DOCTYPE html>
@@ -61,6 +68,7 @@ if($_POST){
     </style>
   </head>
   <body>
+
     <div class="jumbotron">
       <h1><?=$_SESSION['username']?></h1>
       <h2>Edit your Account</h2>
@@ -108,12 +116,26 @@ if($_POST){
                   <?php endforeach ?>
                     <br><small>(Undefined will be hidden on the homepage)</small>
                 <?php endif ?>
-
           </div>
         </div>
         <input class="btn btn-primary " type="submit" name="submit" value="Update your Account">
         <a class="btn btn-warning "href="profile.php?creator=<?=$_SESSION['username']?>">Cancel</a>
       </form>
+      <div class="card">
+        <div class="card-header">Upload an Image</div>
+        <div class="card-body">
+                                                                                    <!-- <form method="post" enctype="multipart/form-data">
+                                                                              <label for="uploaded_file">Filename:</label>
+                                                                              <input type="file" name="uploaded_file" id="uploaded_file" />
+                                                                              <br />
+                                                                              <input type="submit" name="upload" value="Submit" />
+                                                                          </form> -->
+          <form action="uploadimage.php"method='post' enctype='multipart/form-data'>
+             <label for='image'>Image Filename:</label>
+             <input type='file' name='image' id='image'>
+             <input class="btn btn-primary "type='submit' name='upload' value='Upload Image'>
+         </form>
+        </div>
     </div>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
     integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

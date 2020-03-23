@@ -1,4 +1,26 @@
 <?php
+// All Pages need to have input sanitized and validated
+
+// Podcast Upload needs to have Genre put into DropDown List
+
+// Podcast needs a back to profile link
+
+// ADMIN needs to be able to delete any comments
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   session_start();
   require('connect.php');
 

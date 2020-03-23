@@ -1,9 +1,12 @@
 <?php
 session_start();
+require('connect.php');
 if($_SESSION['userid']!='9016')
   header("Location: index.php");
 
-
+$query="SELECT * FROM creator WHERE UserName<>'ADMIN'";
+$statement=$db->prepare($query);
+$statement->execute();
 
 
 
@@ -11,7 +14,7 @@ if($_SESSION['userid']!='9016')
 
 
 // Add Genre Functionality
-// Delete User Account 
+// Delete User Account
 
 ?>
 
@@ -34,6 +37,25 @@ if($_SESSION['userid']!='9016')
         <input type="text" name="password" value="">
         <input type="submit" name="submit" value="Create New User">
       </form>
+    </div>
+    <div class="">
+      <h3>Add a Genre</h3>
+      <form class="" action="process.php" method="post">
+        <label for="genre"></label>
+        <input type="text" name="genre" value="">
+        <input type="submit" name="submit" value="Add Genre">
+      </form>
+    </div>
+    <div class="delete">
+      <h3>Delete User</h3>
+      <ul>
+        <?php foreach($statement as $creator): ?>
+          <li>
+            <p><?=$creator['UserName']?></p>
+            <a href="#">Delete</a>
+          </li>
+        <?php endforeach ?>
+      </ul>
     </div>
 
   </body>
