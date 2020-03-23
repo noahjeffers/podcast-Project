@@ -17,6 +17,7 @@ else{
   $commentstatement = $db->prepare($commentquery);
   $commentstatement -> bindValue(':podcastID', $podcastID);
   $commentstatement -> execute();
+  $creatorID = substr($podcastID,0,4);
 //  $comment = $commentstatement -> fetch();
 
 }
@@ -25,7 +26,7 @@ else{
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title><?=$podcast['Title']?></title>
   </head>
   <body>
     <a href="index.php">Home</a>
@@ -50,6 +51,14 @@ else{
               <small><?=$comments['CommentID'] ?></small>
               <p><?=$comments['Content']?></p>
               <p>From: <?=$comments['Name']?></p>
+              <?php if(isset($_SESSION['userid'])): ?>
+                <?php if($_SESSION['userid']==$creatorID): ?>
+                <small>
+                  <a href="deletecomment.php?commentid=<?=$comments['CommentID']?>&podcastid=<?=$comments['PodcastID']?>">Delete Comment</a>
+                </small>
+              <?php endif ?>
+            <?php endif ?>
+
             </li>
           <?php endforeach ?>
           <?php endif ?>

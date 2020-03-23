@@ -42,11 +42,11 @@ $podcaststatement->execute();
   <body>
     <a href="index.php">Home</a>
     <p><?=$creator?></p>
-    <!-- produces an error if the $_SESSION hasnt been created. -->
     <?php if (isset($_SESSION['username'])): ?>
-    <?php if($_SESSION['username']==$GETCreator)?>
-      <p>THIS IS YOUR PAGE</p>
-      <a href="editaccount.php">EDIT</a>
+      <?php if($_SESSION['username']==$GETCreator)?>
+        <p>THIS IS YOUR PAGE</p>
+        <a href="editaccount.php">EDIT</a><br><br>
+        <a href="upload.php">Upload a Podcast</a>
     <?php endif ?>
     <div class="Podcasts">
       <ul>

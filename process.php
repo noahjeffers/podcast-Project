@@ -85,15 +85,20 @@ if($_SESSION['userid']=='9016')
     <title></title>
   </head>
   <body>
-    <p><?=$PodcastID?></p>
-        <p><?=$Title?></p>
-            <p><?=$Description?></p>
-                <p><?=$Genre?></p>
-                <p><?=$SelectedGenreID?></p>
-                <p><?=$uploadquery?></p>
-      <!-- <h4><?=$newUserName?></h4>
+    <?php if ($_SESSION['userid']!='9016'): ?>
+      <p><?=$PodcastID?></p>
+      <p><?=$Title?></p>
+      <p><?=$Description?></p>
+      <p><?=$Genre?></p>
+      <p><?=$SelectedGenreID?></p>
+      <p><?=$uploadquery?></p>
+    <?php else: ?>
+      <h4><?=$newUserName?></h4>
       <h4><?=$newUserID?></h4>
       <h4><?=$newPassword?></h4>
-            <h4><?=$hashedPassword?></h4> -->
+      <h4><?=$hashedPassword?></h4>
+    <?php endif: ?>
+
+
   </body>
 </html>

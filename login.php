@@ -8,7 +8,7 @@ if(isset($_SESSION['username'])){
 }
 else {
   /// FILTER AND strtolower NEEDED/////////////////////////////////////////////////////////////////////////////////////
-  if(isset($_POST['username']))
+  if(isset($_POST['username'])&& $login==false)
   {
     $username = strtolower(filter_input(INPUT_POST,"username",FILTER_SANITIZE_SPECIAL_CHARS));
     $password = $_POST["password"];//HASH Password?
@@ -25,7 +25,8 @@ else {
       $_SESSION['username']=$user['UserName'];
       $_SESSION['description']=$user['Description'];
       $_SESSION['genreid']=$user['GenreID'];
-      //header("Location: index.php");
+      $profile = "profile.php?creator=".$user['UserName'];
+      header("Location: $profile");
     }
 
   }

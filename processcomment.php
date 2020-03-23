@@ -3,7 +3,7 @@ require('connect.php');
 session_start();
 //Posted from the Podcast page
 // inputs need to be sanitized
-  $link = $_POST['link'];
+  $link = filter_input(INPUT_POST,'link',FILTER_SANITIZE_SPECIAL_CHARS);
   if(""==trim($_POST['name']))
   {
     header("Location: $link");
@@ -20,8 +20,6 @@ session_start();
     $createCommentStatement->bindValue(':content', $commentContent);
     $createCommentStatement->bindValue(':podcastID', $commentFK);
     $createCommentStatement->execute();
-
-
   }
 
 
