@@ -40,7 +40,7 @@ if($_POST){
         if(move_uploaded_file($temporary_podcast_path, $new_podcast_path)){
 
           $creatorid=$_SESSION['userid'];
-          $filename=$podcast_filename;
+          $filename=$podcastLocation;
           $date=date("Y/m/d");
           $PodcastID = $creatorid."-".$filename."-".$date;
 
@@ -64,47 +64,6 @@ if($_POST){
       }
     }
   }
-
-  // function validate_file($temporary_path, $new_path) {
-  //     $allowed_mime_types      = ['audio/mpeg'];
-  //     $allowed_file_extensions = ['mp3'];
-  //
-  //     $actual_file_extension   = pathinfo($new_path, PATHINFO_EXTENSION);
-  //     $actual_mime_type        = getimagesize($temporary_path)['mime'];
-  //
-  //     $file_extension_is_valid = in_array($actual_file_extension, $allowed_file_extensions);
-  //     $mime_type_is_valid      = in_array($actual_mime_type, $allowed_mime_types);
-  //
-  //     return $file_extension_is_valid && $mime_type_is_valid;
-  // }
-  //
-  //
-  //
-  // if ($podcast_upload_detected) {
-  //     $podcast_filename        = $_FILES['podcast']['name'];
-  //     $temporary_podcast_path  = $_FILES['podcast']['tmp_name'];
-  //
-  //
-  //     $new_podcast_path        = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. $podcast_filename;
-  //     $podcastLocation = 'uplodas' . DIRECTORY_SEPARATOR. $image_filename;
-  //
-  //     if (file_is_an_image($temporary_podcast_path, $new_podcast_path)) {
-  //         $uploadquery= "INSERT INTO podcast(PodcastID,Title,Description,GenreID) VALUES(:PodcastID,:Title,:Description,:GenreValue)";
-  //         move_uploaded_file($temporary_image_path, $new_image_path);
-  //         $imagequery = "UPDATE creator SET logo =:logo WHERE UserID = :userID";
-  //         $imagestatement =$db->prepare($imagequery);
-  //         $imagestatement->bindValue(':logo',$image);
-  //         $imagestatement->bindValue('userID',$_SESSION['userid']);
-  //
-  //         $imagestatement->execute();
-  //     }
-  // }
-
-
-
-
-
-
 
 ?>
 <!DOCTYPE html>
