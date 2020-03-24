@@ -111,4 +111,29 @@ if($_SESSION['userid']=='9016')
         <h2>GENRE CREATED</h2>
       <?php endif ?>
   </body>
+
+
+  <form class="upload" action="process.php" method="post">
+      <label for="filename">File Name:</label>
+    <input type="text" name="filename" value="">
+    <label for="title">Episode Title: </label>
+    <input type="text" name="title" value="">
+
+    <label for="description">Description:</label>
+    <textarea name="description" rows="8" cols="80"></textarea>
+    <div class="genres">
+      <select class="genre" name="genre">
+        <?php if ($genrestatement -> rowCount()<1):?>
+          <option value="-1">No Genre Found</option>
+            <h2>Error - No Genre found</h2>
+        <?php else: ?>
+          <?php foreach ($genrestatement as $genre): ?>
+            <option value="<?=$genre['genreid']?>"><?= $genre['genre']?></option>
+          <?php endforeach; ?>
+        <?php endif ?>
+      </select>
+      <br><input type="submit" name="upload" value="Upload File">
+    </div>
+  </form>
+
 </html>

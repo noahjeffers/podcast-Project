@@ -68,7 +68,7 @@
             <label for="username">User Name: </label>
             <input type="text" name="username" value="">
             <label for="password">Password: </label>
-            <input type="text" name="password" value="">
+            <input type="password" name="password" value="" autocomplete="off">
             <input type="submit" name="login" value="Log In">
           </form>
         <?php else : ?>

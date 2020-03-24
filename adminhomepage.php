@@ -51,11 +51,13 @@ $statement->execute();
       <ul>
         <?php foreach($statement as $creator): ?>
           <li>
+            <small><?=$creator['UserID']?></small>
             <p><?=$creator['UserName']?></p>
             <a href="#">Delete</a>
           </li>
         <?php endforeach ?>
       </ul>
+
     </div>
 
   </body>
