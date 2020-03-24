@@ -70,6 +70,9 @@ if (isset($_SESSION['userid'])) {
       </ul>
 
     </div>
-    <img src="<?=$user['logo']?>" alt="">
+    <?php if ($user['logo']!=""): ?>
+        <img src="<?=$user['logo']?>" alt="">
+    <?php endif ?>
+
   </body>
 </html>

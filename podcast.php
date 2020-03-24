@@ -31,7 +31,7 @@ else{
   </head>
   <body>
     <a href="index.php">Home</a>
-    <a href="#">Back to Profile</a>
+    <!-- <a href="#">Back to Profile</a> -->
     <p>filler content for now</p>
     <p><?=$podcast['PodcastID']?></p>
     <div class="container">
@@ -54,7 +54,7 @@ else{
               <p><?=$comments['Content']?></p>
               <p>From: <?=$comments['Name']?></p>
               <?php if(isset($_SESSION['userid'])): ?>
-                <?php if($_SESSION['userid']==$creatorID): ?>
+                <?php if($_SESSION['userid']==$creatorID || $_SESSION['userid']=='9016'): ?>
                 <small>
                   <a href="deletecomment.php?commentid=<?=$comments['CommentID']?>&podcastid=<?=$comments['PodcastID']?>">Delete Comment</a>
                 </small>
