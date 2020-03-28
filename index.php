@@ -30,7 +30,7 @@
   $statement = $db->prepare($query);
   $statement->execute();
 
-  $query = "SELECT genre FROM genre WHERE genre <> 'undefined'  ";
+  $query = "SELECT genre FROM genre WHERE GenreID <> 1  ";
   $genrestatement = $db->prepare($query);
   $genrestatement->execute();
 

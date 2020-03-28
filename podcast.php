@@ -33,6 +33,19 @@ else{
     <a href="index.php">Home</a>
     <!-- <a href="#">Back to Profile</a> -->
     <p>filler content for now</p>
+    <?php if (isset($_SESSION['userid'])): ?>
+      <?php if($_SESSION['userid']==$creatorID): ?>
+        <h1>You Control this page.</h1>
+        <form action="process.php" method="post">
+          <input type="hidden" name="currentPodcast" value="<?=$podcast['PodcastID']?>">
+          <input class="btn btn-primary " type="submit" name="submit" value="Edit Podcast">
+        </form>
+        <form action="process.php" method="post">
+          <input type="hidden" name="currentPodcast" value="<?=$podcast['PodcastID']?>">
+          <input class="btn btn-primary " type="submit" name="submit" value="Delete Podcast">
+        </form>
+      <?php endif ?>
+    <?php endif ?>
     <p><?=$podcast['PodcastID']?></p>
     <div class="container">
       <form class="createcomment" action="processcomment.php" method="post">
@@ -60,10 +73,9 @@ else{
                 </small>
               <?php endif ?>
             <?php endif ?>
-
             </li>
           <?php endforeach ?>
-          <?php endif ?>
+        <?php endif ?>
       </ul>
     </div>
   </body>

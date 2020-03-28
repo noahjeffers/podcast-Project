@@ -5,7 +5,7 @@ if(!isset($_SESSION['userid'])){
   header('Location: Index.php');
 }
 //populate into a dropdown list in The Future////////////////////////////////////////////////////////////////
-$query = "SELECT genre,genreid FROM genre WHERE genre <> 'undefined'";
+$query = "SELECT genre,genreid FROM genre ";
 $genrestatement = $db->prepare($query);
 $genrestatement->execute();
 
@@ -97,8 +97,6 @@ if($_POST){
             </select>
             <br>
           </div>
-
-
           <input type='submit' name='submit' value='Upload File'>
       </form>
     </div>

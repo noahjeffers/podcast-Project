@@ -5,47 +5,6 @@ require('connect.php');
 if(!isset($_SESSION['username'])){
   header("Location: index.php");
 }
-
-$usercreation=false;
-$uploadgenre=false;
-$uploadpodcast=false;
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//CREATORS///////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-if($_SESSION['userid']!='9016')
-{
-  //creates the podcastID by appending a series of relevant data together
-  $creatorid=$_SESSION['userid'];
-  $filename=$_POST['filename'];
-  $date=date("Y/m/d");
-  $PodcastID = $creatorid."-".$filename."-".$date;
-
-  $Title = $_POST['title'];//sanitized\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-  $Description = $_POST['description'];//sanitized\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-  //retrieves the genreID based off the chosen genres
-  // this is then fed into the INSERT statement for the foreign key
-  $Genre = $_POST['genre'];
-  $genrequery = "SELECT GenreID FROM Genre WHERE Genre = :genre";
-  $genrestatement = $db->prepare($genrequery);
-  $genrestatement->bindValue(':genre',$Genre);
-  $genrestatement->execute();
-  $GenreID = $genrestatement->fetch();
-  $SelectedGenreID = $GenreID['GenreID'];
-
-  // $uploadquery= "INSERT INTO podcast(PodcastID,Title,Description,GenreID) VALUES(:PodcastID,:Title,:Description,:GenreValue)";
-  // $uploadStatement = $db->prepare($uploadquery);
-  // $uploadStatement->bindValue(':PodcastID',$PodcastID);
-  // $uploadStatement->bindValue(':Title', $Title);
-  // $uploadStatement->bindValue(':Description', $Description);
-  // $uploadStatement->bindValue(':GenreValue', $GenreID['GenreID']);
-  // $uploadStatement->execute();
-  $uploadpodcast=true;
-}
-
-
-
 //\\//\\//\\//\\//\\//\\///\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
   //\\//\\//\\//\\//\\///\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
     ////\\\       |||||||\\    ||\\\   ///||  |||||||||   ||\\\    |||
@@ -82,9 +41,61 @@ if($_SESSION['userid']=='9016')
   else {
     $uploadgenre=true;
   }
+  header("Location: adminhomepage.php");
+}
 
 
+$edit=false;
+$delete=false;
+$usercreation=false;
+$uploadgenre=false;
+$uploadpodcast=false;
+$test="nothing";
+$error=false;
+$errorMessage="";
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//CREATORS///////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if($_POST){
 
+  $query = "SELECT genre,genreid FROM genre ";
+  $genrestatement = $db->prepare($query);
+  $genrestatement->execute();
+
+  $currentPodcast=$_POST['currentPodcast'];
+  $creatorID = substr($currentPodcast,0,4);
+
+    if($_POST['submit']=="Save Edit"){
+      //update
+      if ($creatorID==$_SESSION['userid']) {
+        $newTitle=$_POST['editTitle'];
+        $newDescription=$_POST['editDescription'];
+        $newGenreID=$_POST['genre'];
+        $editQuery="UPDATE Podcast SET Title=:newTitle, Description=:newDescription, GenreID=:newGenreID WHERE PodcastID =:currentPodcast";
+        $editStatement=$db->prepare($editQuery);
+        $editStatement->bindValue(':newTitle',$newTitle);
+        $editStatement->bindValue(':newDescription',$newDescription);
+        $editStatement->bindValue(':newGenreID',$newGenreID);
+        $editStatement->bindValue(':currentPodcast',$currentPodcast);
+        $editStatement->execute();
+        $test="Edit";
+      }
+      else {
+        $error=true;
+        $errorMessage="Your UserID doesn't match the one stored on the Podcast, please try again";
+      }
+    }
+    else if($_POST['submit']=="Delete"){
+      //delete
+      $test="Delete";
+      $delete=true;
+
+    }
+    $query="SELECT * FROM Podcast WHERE PodcastID=:currentPodcast";
+    $statement=$db->prepare($query);
+    $statement->bindValue(":currentPodcast",$currentPodcast);
+    $statement->execute();
+    $podcast=$statement->fetch();
 }
 ?>
 
@@ -95,6 +106,9 @@ if($_SESSION['userid']=='9016')
     <title></title>
   </head>
   <body>
+    <?php if($error==true): ?>
+      <p><?=$errorMessage?></p>
+    <?php endif ?>
       <?php if ($uploadpodcast==true): ?>
         <p><?=$PodcastID?></p>
         <p><?=$Title?></p>
@@ -109,31 +123,37 @@ if($_SESSION['userid']=='9016')
         <h4><?=$hashedPassword?></h4>
     <?php elseif($uploadgenre==true): ?>
         <h2>GENRE CREATED</h2>
+    <?php endif ?>
+      <?php if($_POST['submit']=="Edit Podcast" || $_POST['submit']=="Save Edit"): ?>
+        <form class="editPodcast" action="process.php" method="post">
+          <p>Current Title: <?=$podcast['Title']?></p>
+          <label for="editTitle">Edit Title:</label>
+          <input type="text" name="editTitle" value=""><br><br>
+          <p>Current Description: <?=$podcast['Description']?></p>
+          <label for="editDescription">Edit Description</label>
+          <textarea name="editDescription" rows="8" cols="80"></textarea>
+          <input type="text" name="currentPodcast" value="<?=$podcast['PodcastID']?>">
+          <input class="btn btn-primary " type="submit" name="submit" value="Save Edit">
+          <div class="genres">
+            <select class="genre" name="genre">
+              <?php if ($genrestatement -> rowCount()<1):?>
+                <option value="-1">No Genre Found</option>
+                  <h2>Error - No Genre found</h2>
+              <?php else: ?>
+                <?php foreach ($genrestatement as $genre): ?>
+                  <option value="<?=$genre['genreid']?>" <?php if($genre['genreid']==$podcast['GenreID']):?> selected="selected"<?php endif ?>><?= $genre['genre']?></option>
+                <?php endforeach; ?>
+              <?php endif ?>
+            </select>
+        </form>
+      <?php else: ?>
       <?php endif ?>
+      <?php if(($_POST['submit']=="Delete Podcast" || $_POST['submit']=="Delete")):?>
+        <form class="deletePodcast" action="process.php" method="post">
+          <input type="hidden" name="currentPodcast" value="<?=$podcast['PodcastID']?>">
+          <input class="btn btn-primary " type="submit" name="submit" value="Delete">
+        </form>
+      <?php endif ?>
+      <p><?=$test?></p>
   </body>
-
-
-  <form class="upload" action="process.php" method="post">
-      <label for="filename">File Name:</label>
-    <input type="text" name="filename" value="">
-    <label for="title">Episode Title: </label>
-    <input type="text" name="title" value="">
-
-    <label for="description">Description:</label>
-    <textarea name="description" rows="8" cols="80"></textarea>
-    <div class="genres">
-      <select class="genre" name="genre">
-        <?php if ($genrestatement -> rowCount()<1):?>
-          <option value="-1">No Genre Found</option>
-            <h2>Error - No Genre found</h2>
-        <?php else: ?>
-          <?php foreach ($genrestatement as $genre): ?>
-            <option value="<?=$genre['genreid']?>"><?= $genre['genre']?></option>
-          <?php endforeach; ?>
-        <?php endif ?>
-      </select>
-      <br><input type="submit" name="upload" value="Upload File">
-    </div>
-  </form>
-
 </html>
