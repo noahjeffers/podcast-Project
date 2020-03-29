@@ -9,18 +9,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
   session_start();
   require('connect.php');
 
@@ -34,7 +22,7 @@
   $genrestatement = $db->prepare($query);
   $genrestatement->execute();
 
-  $podcastquery = "SELECT * FROM podcast";
+  $podcastquery = "SELECT * FROM podcast WHERE GenreID <>1";
   $podcaststatement = $db->prepare($podcastquery);
   $podcaststatement->execute();
 

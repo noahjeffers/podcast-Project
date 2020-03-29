@@ -85,9 +85,26 @@ if($_POST){
         $errorMessage="Your UserID doesn't match the one stored on the Podcast, please try again";
       }
     }
-    else if($_POST['submit']=="Delete"){
-      //delete
-      $test="Delete";
+    else if($_POST['submit']=="Delete Podcast"||$_POST['submit']=="Delete"){
+      $podcastID=$_POST['currentPodcast'];
+      $firstIndex=strrpos($podcastID,'-');
+      $firstTrim=substr($podcastID,0,$firstIndex);
+      $secondIndex=strrpos($firstTrim,'-',-25)+1;
+      $secondTrim=substr($firstTrim,$secondIndex);
+      $filePath='uploads' . DIRECTORY_SEPARATOR. $secondTrim;
+      if ($_POST['submit']=="Delete") {
+        $deleteQuery="DELETE FROM Podcast WHERE PodcastID =:podcastID";
+        $deleteStatement=$db->prepare($deleteQuery);
+        $deleteStatement->bindValue(':podcastID',$podcastID);
+        if ($deleteStatement->execute()) {
+          unlink($filePath);
+        }
+        else{
+          $error=true;
+          $errorMessage="The podcast failed to delete, please remove any comments on the post";
+        }
+      }
+
       $delete=true;
 
     }
@@ -108,7 +125,7 @@ if($_POST){
   <body>
     <?php if($error==true): ?>
       <p><?=$errorMessage?></p>
-    <?php endif ?>
+    <?php else: ?>
       <?php if ($uploadpodcast==true): ?>
         <p><?=$PodcastID?></p>
         <p><?=$Title?></p>
@@ -128,10 +145,10 @@ if($_POST){
         <form class="editPodcast" action="process.php" method="post">
           <p>Current Title: <?=$podcast['Title']?></p>
           <label for="editTitle">Edit Title:</label>
-          <input type="text" name="editTitle" value=""><br><br>
+          <input type="text" name="editTitle" value="<?=$podcast['Title']?>"><br><br>
           <p>Current Description: <?=$podcast['Description']?></p>
           <label for="editDescription">Edit Description</label>
-          <textarea name="editDescription" rows="8" cols="80"></textarea>
+          <textarea name="editDescription" rows="8" cols="80"><?=$podcast['Description']?></textarea>
           <input type="text" name="currentPodcast" value="<?=$podcast['PodcastID']?>">
           <input class="btn btn-primary " type="submit" name="submit" value="Save Edit">
           <div class="genres">
@@ -146,14 +163,26 @@ if($_POST){
               <?php endif ?>
             </select>
         </form>
+        <a href="profile.php?creator=<?=$_SESSION['username']?>">Back to your Profile</a>
       <?php else: ?>
       <?php endif ?>
-      <?php if(($_POST['submit']=="Delete Podcast" || $_POST['submit']=="Delete")):?>
+      <?php if($_POST['submit']=="Delete Podcast"):?>
         <form class="deletePodcast" action="process.php" method="post">
           <input type="hidden" name="currentPodcast" value="<?=$podcast['PodcastID']?>">
           <input class="btn btn-primary " type="submit" name="submit" value="Delete">
+          <p><?=$podcastID?></p>
+          <p><?=$firstIndex?></p>
+          <p><?=$firstTrim?></p>
+          <p><?=$secondIndex?></p>
+          <p><?=$secondTrim?></p>
+          <p><?=$filePath?></p>
         </form>
       <?php endif ?>
+      <?php if(($_POST['submit']=="Delete")): ?>
+        <p>The podcast has been deleted</p>
+        <a href="profile.php?creator=<?=$_SESSION['username']?>">Back to your Profile</a>
+      <?php endif ?>
       <p><?=$test?></p>
+    <?php endif ?>
   </body>
 </html>

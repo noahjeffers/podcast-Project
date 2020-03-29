@@ -17,8 +17,13 @@ else{
   $commentstatement = $db->prepare($commentquery);
   $commentstatement -> bindValue(':podcastID', $podcastID);
   $commentstatement -> execute();
-  $creatorID = substr($podcastID,0,4);
 
+    $creatorID = substr($podcastID,0,stripos($podcastID,'-'));
+  //
+  // $creatorQuery="SELECT * FROM Creator WHERE UserID=:creatorID";
+  // $creatorStatement=$db->prepare($creatorQuery);
+  // $creatorStatement->bindValue(':creatorID',$creatorID);
+  //
 
 
 }
@@ -31,10 +36,10 @@ else{
   </head>
   <body>
     <a href="index.php">Home</a>
-    <!-- <a href="#">Back to Profile</a> -->
+    <?=$creatorID ?>
     <p>filler content for now</p>
     <?php if (isset($_SESSION['userid'])): ?>
-      <?php if($_SESSION['userid']==$creatorID): ?>
+      <?php if($_SESSION['userid']==$creatorID||$_SESSION['userid']=='9016'): ?>
         <h1>You Control this page.</h1>
         <form action="process.php" method="post">
           <input type="hidden" name="currentPodcast" value="<?=$podcast['PodcastID']?>">

@@ -26,7 +26,7 @@ if(isset($_SESSION['username'])){
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Only loads the podcasts of the Creator supplied in the $_GET
-$podcastquery = "SELECT title, description,PodcastID FROM Podcast WHERE podcastID LIKE  :profilepodcast  ";
+$podcastquery = "SELECT title, description,PodcastID FROM Podcast WHERE podcastID LIKE  :profilepodcast AND GenreID<>1 ";
 $podcaststatement = $db->prepare($podcastquery);
 $userWwildcard =$user['userid'].'%';
 $podcaststatement ->bindValue(':profilepodcast',$userWwildcard);
@@ -34,6 +34,12 @@ $podcaststatement->execute();
 if (isset($_SESSION['userid'])) {
   $SessionID=$_SESSION['userid'];
   $PageID=$user['userid'];
+
+  $podcastquery = "SELECT title, description,PodcastID FROM Podcast WHERE podcastID LIKE  :profilepodcast  ";
+  $podcaststatement = $db->prepare($podcastquery);
+  $userWwildcard =$user['userid'].'%';
+  $podcaststatement ->bindValue(':profilepodcast',$userWwildcard);
+  $podcaststatement->execute();
 }
 
 ?>
@@ -58,7 +64,7 @@ if (isset($_SESSION['userid'])) {
     <div class="Podcasts">
       <ul>
         <?php if ($podcaststatement -> rowCount()<1):?>
-            <h2>Error - No Podcasts found</h2>
+            <h2>No podcasts have been uploaded yet.</h2>
         <?php else: ?>
           <?php foreach ($podcaststatement as $podcast): ?>
             <li>

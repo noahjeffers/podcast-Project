@@ -40,7 +40,7 @@ if($_POST){
         if(move_uploaded_file($temporary_podcast_path, $new_podcast_path)){
 
           $creatorid=$_SESSION['userid'];
-          $filename=$podcastLocation;
+          $filename=$podcast_filename;//$podcastLocation;
           $date=date("Y/m/d");
           $PodcastID = $creatorid."-".$filename."-".$date;
 
