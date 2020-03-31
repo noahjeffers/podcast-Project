@@ -1,6 +1,18 @@
 <?php
 session_start();
 require('connect.php');
+
+if (!isset($_SESSION['userid'])) {
+  header("Location: index.php");
+}
+
+$Query="SELECT Logo FROM Creator WHERE UserID=:userID";
+$Statement=$db->prepare($Query);
+$Statement->bindValue(':userID',$_SESSION['userid']);
+$Statement->execute();
+$oldImage=$Statement->fetch();
+
+if ($_POST['submit']=='Upload Image') {
   // file_is_an_image() - Checks the mime-type & extension of the uploaded file for "image-ness".
   function file_is_an_image($temporary_path, $new_path) {
       $allowed_mime_types      = ['image/gif', 'image/jpeg','image/jpg', 'image/png'];
@@ -28,6 +40,9 @@ require('connect.php');
 
       if (file_is_an_image($temporary_image_path, $new_image_path)) {
           move_uploaded_file($temporary_image_path, $new_image_path);
+          if($Statement->rowCount()>0){
+              unlink($oldImage['Logo']);
+          }
           $imagequery = "UPDATE creator SET logo =:logo WHERE UserID = :userID";
           $imagestatement =$db->prepare($imagequery);
           $imagestatement->bindValue(':logo',$image);
@@ -36,9 +51,16 @@ require('connect.php');
           $imagestatement->execute();
       }
   }
+}
+if ($_POST['submit']=='Delete Image') {
 
+  unlink($oldImage['Logo']);
+  $updateImageQuery="UPDATE Creator SET Logo = NULL WHERE UserID=:userID";
+  $updateImageStatement=$db->prepare($updateImageQuery);
+  $updateImageStatement->bindValue(':userID',$_SESSION['userid']);
+  $updateImageStatement->execute();
 
-
+}
 
 
 ?>
@@ -63,6 +85,9 @@ require('connect.php');
         <p><?=$new_image_path?></p>
 
     <?php endif ?>
+
+
+    <p><?=$oldImage['Logo'] ?></p>
     <img src="<?=$image?>" alt="image">
   </body>
 </html>

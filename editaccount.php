@@ -131,7 +131,8 @@ if($_POST){
           <form action="uploadimage.php"method='post' enctype='multipart/form-data'>
              <label for='image'>Image Filename:</label>
              <input type='file' name='image' id='image'>
-             <input class="btn btn-primary "type='submit' name='upload' value='Upload Image'>
+             <input class="btn btn-primary "type='submit' name='submit' value='Upload Image'>
+             <input class="btn btn-warning"type="submit" name="submit" value="Delete Image">
          </form>
         </div>
     </div>
