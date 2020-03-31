@@ -60,7 +60,7 @@
             <input type="submit" name="login" value="Log In">
           </form>
         <?php else : ?>
-          <?php if ($_SESSION['userid']=='9016'): ?>
+          <?php if ($_SESSION['username']=='ADMIN'): ?>
             <a href="adminhomepage.php">ADMIN</a>
             <a href="logout.php">Log Out</a>
           <?php else: ?>

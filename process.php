@@ -5,46 +5,6 @@ require('connect.php');
 if(!isset($_SESSION['username'])){
   header("Location: index.php");
 }
-//\\//\\//\\//\\//\\//\\///\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
-  //\\//\\//\\//\\//\\///\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
-    ////\\\       |||||||\\    ||\\\   ///||  |||||||||   ||\\\    |||
-   ////  \\\      |||     \\   |||\\\ ///|||     |||      |||\\\   |||
-  ////    \\\     |||      \\  ||| \\\// |||     |||      ||| \\\  |||
- //////////\\\    |||      //  |||  \\/  |||     |||      |||  \\\ |||
-////        \\\   |||     //   |||       |||     |||      |||   \\\|||
-///          \\\  |||||||//    |||       |||  |||||||||   |||    \\\||
-//\\//\\//\\//\\//\\//\\///\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
-  //\\//\\//\\//\\//\\///\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
-if($_SESSION['userid']=='9016')
-{
-  if ($_POST['submit']=="Create New User") {
-
-    $newUserName = filter_input(INPUT_POST,'username',FILTER_SANITIZE_SPECIAL_CHARS);
-    $newUserID = filter_input(INPUT_POST,'userid', FILTER_VALIDATE_INT);
-    $newPassword = filter_input(INPUT_POST,'password',FILTER_SANITIZE_SPECIAL_CHARS);
-    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-
-    ///// DEFAULT VALUES
-    $genreID='1';
-    $description= "New Account";
-
-    $createUserquery= "INSERT INTO creator(UserID,Password,UserName,Description,GenreID) VALUES(:userid,:password,:username,:description,:genreid)";
-    $createUserStatement = $db->prepare($createUserquery);
-    $createUserStatement->bindValue(':userid',$newUserID);
-    $createUserStatement->bindValue(':username', $newUserName);
-    $createUserStatement->bindValue(':password', $hashedPassword);
-    $createUserStatement->bindValue(':description',$description);
-    $createUserStatement->bindValue(':genreid',$genreID);
-    $createUserStatement->execute();
-    $usercreation=true;
-  }
-  else {
-    $uploadgenre=true;
-  }
-  header("Location: adminhomepage.php");
-}
-
-
 $edit=false;
 $delete=false;
 $usercreation=false;

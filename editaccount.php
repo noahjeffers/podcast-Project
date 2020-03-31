@@ -4,8 +4,47 @@ require('connect.php');
 if(!isset($_SESSION['username'])){
   header("Location: index.php");
 }
+$warning=false;
 //Page Load
-if (!$_POST) {
+
+
+
+
+
+
+//this page will deal with image upload
+//and updating the creator database
+
+
+if($_POST){
+    $newUserName=filter_input(INPUT_POST,'username',FILTER_SANITIZE_SPECIAL_CHARS);
+    if(strtolower($newUserName)=='admin'){
+      $warning=true;
+    }else{
+      $newDescription=filter_input(INPUT_POST,'description',FILTER_SANITIZE_SPECIAL_CHARS);
+      $newGenre = $_POST['genre'];
+      //retrieve the GenreID based off the selected genre radio button
+      $Genre = $_POST['genre'];
+      $genrequery = "SELECT GenreID FROM Genre WHERE Genre = :genre";
+      $genrestatement = $db->prepare($genrequery);
+      $genrestatement->bindValue(':genre',$Genre);
+      $genrestatement->execute();
+      $GenreID = $genrestatement->fetch();
+      $SelectedGenreID = $GenreID['GenreID'];
+      $userID=$_SESSION['userid'];
+
+      $updatequery = "UPDATE creator SET UserName = :username, Description = :description, GenreID = :genre WHERE UserID = $userID";
+      $updatestatement=$db->prepare($updatequery);
+      $updatestatement->bindValue(':username',$newUserName);
+      $updatestatement->bindValue(':description', $newDescription);
+      $updatestatement->bindValue(':genre',$SelectedGenreID);
+      $updatestatement->execute();
+
+      $_SESSION['username']=$newUserName;
+      $_SESSION['description']=$newDescription;
+
+    }
+}
   $user = $_SESSION['username'];
   $query = "SELECT genre FROM genre ";
   $genrestatement = $db->prepare($query);
@@ -17,43 +56,8 @@ if (!$_POST) {
   $secondgenrestatement->bindValue(':genreID',$currentGenreID);
   $secondgenrestatement->execute();
   $currentGenre=$secondgenrestatement->fetch();
-}
 
 
-
-
-//this page will deal with image upload
-//and updating the creator database
-
-
-if($_POST){
-
-
-    $newUserName=filter_input(INPUT_POST,'username',FILTER_SANITIZE_SPECIAL_CHARS);
-    $newDescription=filter_input(INPUT_POST,'description',FILTER_SANITIZE_SPECIAL_CHARS);
-    $newGenre = $_POST['genre'];
-    //retrieve the GenreID based off the selected genre radio button
-    $Genre = $_POST['genre'];
-    $genrequery = "SELECT GenreID FROM Genre WHERE Genre = :genre";
-    $genrestatement = $db->prepare($genrequery);
-    $genrestatement->bindValue(':genre',$Genre);
-    $genrestatement->execute();
-    $GenreID = $genrestatement->fetch();
-    $SelectedGenreID = $GenreID['GenreID'];
-    $userID=$_SESSION['userid'];
-
-    $updatequery = "UPDATE creator SET UserName = :username, Description = :description, GenreID = :genre WHERE UserID = $userID";
-    $updatestatement=$db->prepare($updatequery);
-    $updatestatement->bindValue(':username',$newUserName);
-    $updatestatement->bindValue(':description', $newDescription);
-    $updatestatement->bindValue(':genre',$SelectedGenreID);
-    $updatestatement->execute();
-
-    $_SESSION['username']=$newUserName;
-    $_SESSION['description']=$newDescription;
-    // Removes the Genre Radio Buttons on POST, Will have to look into it.
-
-}
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -124,12 +128,6 @@ if($_POST){
       <div class="card">
         <div class="card-header">Upload an Image</div>
         <div class="card-body">
-                                                                                    <!-- <form method="post" enctype="multipart/form-data">
-                                                                              <label for="uploaded_file">Filename:</label>
-                                                                              <input type="file" name="uploaded_file" id="uploaded_file" />
-                                                                              <br />
-                                                                              <input type="submit" name="upload" value="Submit" />
-                                                                          </form> -->
           <form action="uploadimage.php"method='post' enctype='multipart/form-data'>
              <label for='image'>Image Filename:</label>
              <input type='file' name='image' id='image'>
@@ -137,6 +135,9 @@ if($_POST){
          </form>
         </div>
     </div>
+    <?php if($warning==true): ?>
+      <?php echo "<script type='text/javascript'>alert('The name you have selected is invalid');</script>"; ?>
+    <?php endif ?>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
     integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </body>

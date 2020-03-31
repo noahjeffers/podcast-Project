@@ -39,7 +39,7 @@ else{
     <?=$creatorID ?>
     <p>filler content for now</p>
     <?php if (isset($_SESSION['userid'])): ?>
-      <?php if($_SESSION['userid']==$creatorID||$_SESSION['userid']=='9016'): ?>
+      <?php if($_SESSION['userid']==$creatorID||$_SESSION['name']=='ADMIN'): ?>
         <h1>You Control this page.</h1>
         <form action="process.php" method="post">
           <input type="hidden" name="currentPodcast" value="<?=$podcast['PodcastID']?>">
@@ -72,7 +72,7 @@ else{
               <p><?=$comments['Content']?></p>
               <p>From: <?=$comments['Name']?></p>
               <?php if(isset($_SESSION['userid'])): ?>
-                <?php if($_SESSION['userid']==$creatorID || $_SESSION['userid']=='9016'): ?>
+                <?php if($_SESSION['userid']==$creatorID || $_SESSION['username']=='ADMIN'): ?>
                 <small>
                   <a href="deletecomment.php?commentid=<?=$comments['CommentID']?>&podcastid=<?=$comments['PodcastID']?>">Delete Comment</a>
                 </small>
