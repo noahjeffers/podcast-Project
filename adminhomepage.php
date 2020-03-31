@@ -33,9 +33,7 @@ $genreStatements->execute();
   <body>
     <div class="createuser">
       <h3>User Creation</h3>
-      <form class="createuseraccount" action="adminprocess.php" method="post">
-        <label for="userid">UserID:</label>
-        <input type="text" name="userid" value="">
+      <form class="createuseraccount" action="adminprocess.php" method="post">        
         <label for="username">User Name:</label>
         <input type="text" name="username" value="">
         <label for="password">Password:</label>
@@ -57,18 +55,7 @@ $genreStatements->execute();
         <input type="submit" name="submit" value="Add Genre">
       </form>
     </div>
-    <div class="delete">
-      <h3>Delete User</h3>
-      <ul>
-        <?php foreach($statement as $creator): ?>
-          <li>
-            <small><?=$creator['UserID']?></small>
-            <p><?=$creator['UserName']?></p>
-            <a href="#">Delete</a>
-          </li>
-        <?php endforeach ?>
-      </ul>
-    </div>
+
     <div class="genres">
       <h3>Delete or Edit Genre</h3>
       <form class="deleteOrEditGenre" action="adminprocess.php" method="post">
@@ -87,6 +74,18 @@ $genreStatements->execute();
         <input type="submit" name="submit" value="Edit Genre">
         <input type="submit" name="submit" value="Delete Genre">
       </form>
+    </div>
+    <div class="delete">
+      <h3>Delete User</h3>
+      <ul>
+        <?php foreach($statement as $creator): ?>
+          <li>
+            <small><?=$creator['UserID']?></small>
+            <p><?=$creator['UserName']?></p>
+            <a href="#">Delete</a>
+          </li>
+        <?php endforeach ?>
+      </ul>
     </div>
   </body>
 </html>

@@ -20,7 +20,6 @@ if($_SESSION['username']=='ADMIN')
   if ($_POST['submit']=="Create New User") {
 
     $newUserName = filter_input(INPUT_POST,'username',FILTER_SANITIZE_SPECIAL_CHARS);
-    $newUserID = filter_input(INPUT_POST,'userid', FILTER_VALIDATE_INT);
     $newPassword = filter_input(INPUT_POST,'password',FILTER_SANITIZE_SPECIAL_CHARS);
     $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
@@ -28,9 +27,8 @@ if($_SESSION['username']=='ADMIN')
     $genreID='1';
     $description= "New Account";
 
-    $createUserquery= "INSERT INTO creator(UserID,Password,UserName,Description,GenreID) VALUES(:userid,:password,:username,:description,:genreid)";
+    $createUserquery= "INSERT INTO creator (Password,UserName,Description,GenreID) VALUES(:password,:username,:description,:genreid)";
     $createUserStatement = $db->prepare($createUserquery);
-    $createUserStatement->bindValue(':userid',$newUserID);
     $createUserStatement->bindValue(':username', $newUserName);
     $createUserStatement->bindValue(':password', $hashedPassword);
     $createUserStatement->bindValue(':description',$description);

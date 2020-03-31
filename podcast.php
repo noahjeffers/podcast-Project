@@ -57,7 +57,7 @@ else{
         <label for="name">Name: </label>
         <input type="text" name="name" value="">
         <label for="content">Comment: </label>
-        <textarea name="content" rows="8" cols="80"></textarea>
+        <textarea id="content" name="content" rows="8" cols="80"></textarea>
         <input type="submit" name="submit" value="Post Comment">
         <input type="hidden" name="podcastID" value="<?=$podcast['PodcastID']?>">
         <input type="hidden" name="link" value="podcast.php?podcastid=<?=$podcast['PodcastID']?>">

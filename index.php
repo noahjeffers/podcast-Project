@@ -86,7 +86,7 @@
               <h2>Error - No Genre found</h2>
           <?php else: ?>
             <?php foreach ($genrestatement as $genre): ?>
-              <li class"nav-item">
+              <li class="nav-item">
                 <a href="index.php?genre=<?=$genre['genre']?>"><?=$genre['genre']?></a>
               </li>
 

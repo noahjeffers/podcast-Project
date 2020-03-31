@@ -64,7 +64,9 @@ if (isset($_SESSION['userid'])) {
     <div class="Podcasts">
       <ul>
         <?php if ($podcaststatement -> rowCount()<1):?>
+          <li>
             <h2>No podcasts have been uploaded yet.</h2>
+            </li>
         <?php else: ?>
           <?php foreach ($podcaststatement as $podcast): ?>
             <li>
