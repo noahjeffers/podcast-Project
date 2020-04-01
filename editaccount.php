@@ -123,7 +123,7 @@ if($_POST){
           </div>
         </div>
         <input class="btn btn-primary " type="submit" name="submit" value="Update your Account">
-        <a class="btn btn-warning "href="profile.php?creator=<?=$_SESSION['username']?>">Cancel</a>
+        <a class="btn btn-warning "href="profile.php?creator=<?=$_SESSION['userid']?>">Cancel</a>
       </form>
       <div class="card">
         <div class="card-header">Upload an Image</div>
@@ -139,7 +139,6 @@ if($_POST){
     <?php if($warning==true): ?>
       <?php echo "<script type='text/javascript'>alert('The name you have selected is invalid');</script>"; ?>
     <?php endif ?>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </body>
 </html>

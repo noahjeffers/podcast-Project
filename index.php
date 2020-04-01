@@ -7,13 +7,10 @@
 
 // ADMIN needs to be able to delete any comments
 
-
-
+//LOAD
   session_start();
   require('connect.php');
 
-  //$query = "SELECT username,userid FROM creator ";
-  //$query = "SELECT username FROM creator WHERE username <> 'ADMIN' ";
   $query = "SELECT * FROM creator WHERE GenreID <> 1 AND username <> 'ADMIN' ";
   $statement = $db->prepare($query);
   $statement->execute();
@@ -48,27 +45,14 @@
 </style>
   </head>
   <body>
-    <div class="container">
-      <div class="page-header">
-        <h2>NETWORK NAME</h2>
-        <?php if(!isset($_SESSION['username'])): ?>
-          <form class="log" action="login.php" method="post">
-            <label for="username">User Name: </label>
-            <input id="username" type="text" name="username" value="">
-            <label for="password">Password: </label>
-            <input id="password" type="password" name="password" value="" autocomplete="off">
-            <input type="submit" name="login" value="Log In">
-          </form>
-        <?php else : ?>
-          <?php if ($_SESSION['username']=='ADMIN'): ?>
-            <a href="adminhomepage.php">ADMIN</a>
-            <a href="logout.php">Log Out</a>
-          <?php else: ?>
-            <a href="profile.php?creator=<?=$_SESSION['username']?>">My Profile</a>
-            <a href="logout.php">Log Out</a>
-          <?php endif; ?>
-      <?php endif ?>
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-4">Network Name</h1>
+        <p class="lead">We cover all of the topics, from News to Comedy to History. NETWORK NAME does it all</p>
       </div>
+    </div>
+    <div class="container">
+
       <div class="">
         <ul class="creators">
           <?php if ($statement -> rowCount()<1):?>
@@ -129,13 +113,28 @@
         </div>
       </div>
 
-      <?php if(isset($_SESSION['username'])): ?>
-        <a href="profile.php">Profile</a>
-          <a href="logout.php">Log Out</a>
-          <p><?=$_SESSION['userid']?></p>
+
+
+      <div class="login">
+        <?php if(!isset($_SESSION['username'])): ?>
+          <form class="log" action="login.php" method="post">
+            <label for="username">User Name: </label>
+            <input id="username" type="text" name="username" value="">
+            <label for="password">Password: </label>
+            <input id="password" type="password" name="password" value="" autocomplete="off">
+            <input type="submit" name="login" value="Log In">
+          </form>
+        <?php else : ?>
+          <?php if ($_SESSION['username']=='ADMIN'): ?>
+            <a href="adminhomepage.php">ADMIN</a>
+            <a href="logout.php">Log Out</a>
+          <?php else: ?>
+            <a href="profile.php?creator=<?=$_SESSION['userid']?>">My Profile</a>
+            <a href="logout.php">Log Out</a>
+          <?php endif; ?>
       <?php endif ?>
+      </div>
     </div>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </body>
 </html>

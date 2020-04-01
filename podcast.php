@@ -33,21 +33,33 @@ else{
   <head>
     <meta charset="utf-8">
     <title><?=$podcast['Title']?></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+      .jumbotron{
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-4"><?=$podcast['Title']?></h1>
+        <p class="lead">NETWORK NAME</p>
+      </div>
+    </div>
     <a href="index.php">Home</a>
     <?=$creatorID ?>
-    <h4><?=$podcast['Title']?></h4>
+
     <p>Description: <?=$podcast['Description']?></p>
     <?php if (isset($_SESSION['userid'])): ?>
-      <?php if($_SESSION['userid']==$creatorID||$_SESSION['name']=='ADMIN'): ?>
+      <?php if($_SESSION['userid']==$creatorID||$_SESSION['username']=='ADMIN'): ?>
         <form action="process.php" method="post">
           <input type="hidden" name="currentPodcast" value="<?=$podcast['PodcastID']?>">
           <input class="btn btn-primary " type="submit" name="submit" value="Edit Podcast">
         </form>
         <form action="process.php" method="post">
           <input type="hidden" name="currentPodcast" value="<?=$podcast['PodcastID']?>">
-          <input class="btn btn-primary " type="submit" name="submit" value="Delete Podcast">
+          <input class="btn btn-warning " type="submit" name="submit" value="Delete Podcast">
         </form>
       <?php endif ?>
     <?php endif ?>
@@ -82,5 +94,6 @@ else{
         <?php endif ?>
       </ul>
     </div>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </body>
 </html>
