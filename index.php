@@ -12,9 +12,9 @@
   session_start();
   require('connect.php');
 
-  $query = "SELECT username,userid FROM creator ";
+  //$query = "SELECT username,userid FROM creator ";
   //$query = "SELECT username FROM creator WHERE username <> 'ADMIN' ";
-  $query = "SELECT username FROM creator WHERE GenreID <> 1 AND username <> 'ADMIN' ";
+  $query = "SELECT * FROM creator WHERE GenreID <> 1 AND username <> 'ADMIN' ";
   $statement = $db->prepare($query);
   $statement->execute();
 
@@ -54,9 +54,9 @@
         <?php if(!isset($_SESSION['username'])): ?>
           <form class="log" action="login.php" method="post">
             <label for="username">User Name: </label>
-            <input type="text" name="username" value="">
+            <input id="username" type="text" name="username" value="">
             <label for="password">Password: </label>
-            <input type="password" name="password" value="" autocomplete="off">
+            <input id="password" type="password" name="password" value="" autocomplete="off">
             <input type="submit" name="login" value="Log In">
           </form>
         <?php else : ?>
@@ -75,7 +75,11 @@
               <h2>Error - No Creators found</h2>
           <?php else: ?>
             <?php foreach ($statement as $user): ?>
-              <li> <a href="profile.php?creator=<?=$user['username']?>"> <?=$user['username']?></a></li>
+              <li>
+                <a href="profile.php?creator=<?=$user['UserID']?>">
+                  <?=$user['UserName']?>
+                </a>
+              </li>
               <?php endforeach ?>
           <?php endif ?>
         </ul>

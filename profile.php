@@ -14,9 +14,9 @@ if(strtolower($GETCreator)=='admin'){
   header("Location: index.php");
 }
 else{
-  $query = "SELECT username,userid,logo,description FROM creator WHERE UserName = :creator ";
+  $query = "SELECT username,userid,logo,description FROM creator WHERE UserID = :userId ";
   $statement = $db->prepare($query);
-  $statement->bindValue(':creator',$GETCreator);
+  $statement->bindValue(':userId',$GETCreator);
   $statement->execute();
   $user = $statement->fetch();
 }
