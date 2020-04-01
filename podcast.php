@@ -37,10 +37,10 @@ else{
   <body>
     <a href="index.php">Home</a>
     <?=$creatorID ?>
-    <p>filler content for now</p>
+    <h4><?=$podcast['Title']?></h4>
+    <p>Description: <?=$podcast['Description']?></p>
     <?php if (isset($_SESSION['userid'])): ?>
       <?php if($_SESSION['userid']==$creatorID||$_SESSION['name']=='ADMIN'): ?>
-        <h1>You Control this page.</h1>
         <form action="process.php" method="post">
           <input type="hidden" name="currentPodcast" value="<?=$podcast['PodcastID']?>">
           <input class="btn btn-primary " type="submit" name="submit" value="Edit Podcast">
@@ -51,11 +51,10 @@ else{
         </form>
       <?php endif ?>
     <?php endif ?>
-    <p><?=$podcast['PodcastID']?></p>
     <div class="container">
       <form class="createcomment" action="processcomment.php" method="post">
         <label for="name">Name: </label>
-        <input type="text" name="name" value="">
+        <input id="name" type="text" name="name" value=""><br><br>
         <label for="content">Comment: </label>
         <textarea id="content" name="content" rows="8" cols="80"></textarea>
         <input type="submit" name="submit" value="Post Comment">

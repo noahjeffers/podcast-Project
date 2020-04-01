@@ -49,7 +49,7 @@ if($_POST){
       $podcastID=$_POST['currentPodcast'];
       $firstIndex=strrpos($podcastID,'-');
       $firstTrim=substr($podcastID,0,$firstIndex);
-      $secondIndex=strrpos($firstTrim,'-',-25)+1;
+      $secondIndex=strpos($firstTrim,'-',0)+1;
       $secondTrim=substr($firstTrim,$secondIndex);
       $filePath='uploads' . DIRECTORY_SEPARATOR. $secondTrim;
       if ($_POST['submit']=="Delete") {

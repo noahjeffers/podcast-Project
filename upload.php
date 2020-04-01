@@ -92,7 +92,7 @@ if($_POST){
               <?php else: ?>
                 <?php foreach ($genrestatement as $genre): ?>
                   <option value="<?=$genre['genreid']?>"><?= $genre['genre']?></option>
-                <?php endforeach; ?>
+                <?php endforeach ?>
               <?php endif ?>
             </select>
             <br>

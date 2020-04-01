@@ -14,7 +14,7 @@ if(strtolower($GETCreator)=='admin'){
   header("Location: index.php");
 }
 else{
-  $query = "SELECT username,userid,logo FROM creator WHERE UserName = :creator ";
+  $query = "SELECT username,userid,logo,description FROM creator WHERE UserName = :creator ";
   $statement = $db->prepare($query);
   $statement->bindValue(':creator',$GETCreator);
   $statement->execute();
@@ -52,6 +52,7 @@ if (isset($_SESSION['userid'])) {
   <body>
     <a href="index.php">Home</a>
     <p><?=$GETCreator?>'s Profile</p>
+    <p>Description: <?=$user['description']?></p>
     <?php if (isset($_SESSION['userid'])): ?>
       <?php if($SessionID==$PageID):?>
         <p>THIS IS YOUR PAGE</p>
@@ -76,11 +77,9 @@ if (isset($_SESSION['userid'])) {
             <?php endforeach ?>
         <?php endif ?>
       </ul>
-
     </div>
     <?php if ($user['logo']!=""): ?>
-        <img src="<?=$user['logo']?>" alt="">
+        <img src="<?=$user['logo']?>" alt="<?=$user['logo']?>">
     <?php endif ?>
-
   </body>
 </html>

@@ -87,7 +87,7 @@
           <?php else: ?>
             <?php foreach ($genrestatement as $genre): ?>
               <li class="nav-item">
-                <a href="index.php?genre=<?=$genre['genre']?>"><?=$genre['genre']?></a>
+                <a href="genre.php?genre=<?=$genre['genre']?>"><?=$genre['genre']?></a>
               </li>
 
               <?php endforeach ?>

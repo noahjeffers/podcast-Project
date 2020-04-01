@@ -6,6 +6,9 @@ if (!isset($_SESSION['userid'])) {
   header("Location: index.php");
 }
 
+$profile="profile.php?creator=".$_SESSION['username'];
+
+
 $Query="SELECT Logo FROM Creator WHERE UserID=:userID";
 $Statement=$db->prepare($Query);
 $Statement->bindValue(':userID',$_SESSION['userid']);
@@ -13,7 +16,6 @@ $Statement->execute();
 $oldImage=$Statement->fetch();
 
 if ($_POST['submit']=='Upload Image') {
-  // file_is_an_image() - Checks the mime-type & extension of the uploaded file for "image-ness".
   function file_is_an_image($temporary_path, $new_path) {
       $allowed_mime_types      = ['image/gif', 'image/jpeg','image/jpg', 'image/png'];
       $allowed_file_extensions = ['gif', 'jpg', 'jpeg', 'png'];
@@ -41,6 +43,7 @@ if ($_POST['submit']=='Upload Image') {
       if (file_is_an_image($temporary_image_path, $new_image_path)) {
           move_uploaded_file($temporary_image_path, $new_image_path);
           if($Statement->rowCount()>0){
+            //Deletes the previously stored Logo using the reference in the database
               unlink($oldImage['Logo']);
           }
           $imagequery = "UPDATE creator SET logo =:logo WHERE UserID = :userID";
@@ -49,6 +52,7 @@ if ($_POST['submit']=='Upload Image') {
           $imagestatement->bindValue('userID',$_SESSION['userid']);
 
           $imagestatement->execute();
+          header("Location: $profile");
       }
   }
 }
@@ -59,6 +63,7 @@ if ($_POST['submit']=='Delete Image') {
   $updateImageStatement=$db->prepare($updateImageQuery);
   $updateImageStatement->bindValue(':userID',$_SESSION['userid']);
   $updateImageStatement->execute();
+  header("Location: $profile");
 
 }
 
@@ -72,22 +77,7 @@ if ($_POST['submit']=='Delete Image') {
     <title></title>
   </head>
   <body>
-    <?php if ($upload_error_detected): ?>
-
-        <p>Error Number: <?= $_FILES['image']['error'] ?></p>
-
-    <?php elseif ($image_upload_detected): ?>
-
-        <p>Client-Side Filename: <?= $_FILES['image']['name'] ?></p>
-        <p>Apparent Mime Type:   <?= $_FILES['image']['type'] ?></p>
-        <p>Size in Bytes:        <?= $_FILES['image']['size'] ?></p>
-        <p>Temporary Path:       <?= $_FILES['image']['tmp_name'] ?></p>
-        <p><?=$new_image_path?></p>
-
-    <?php endif ?>
-
-
-    <p><?=$oldImage['Logo'] ?></p>
-    <img src="<?=$image?>" alt="image">
+  <h2>Invalid file type please return and try again.</h2>
+  <a href="editaccount.php">Edit your Account</a>
   </body>
 </html>
