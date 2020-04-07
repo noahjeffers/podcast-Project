@@ -55,9 +55,9 @@ if ($_POST['submit']=='Upload Image') {
           $imagestatement->execute();
 
           $resizeImage= new \Gumlet\ImageResize($image);
-          $resizeImage->scale(50);
+          $resizeImage->crop(300, 180);
           $resizeImage->save($image);
-          //header("Location: $profile");
+          header("Location: $profile");
       }
   }
 }

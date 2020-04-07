@@ -87,21 +87,6 @@ if($_POST){
   <body>
     <?php if($error==true): ?>
       <p><?=$errorMessage?></p>
-    <?php else: ?>
-      <?php if ($uploadpodcast==true): ?>
-        <p><?=$PodcastID?></p>
-        <p><?=$Title?></p>
-        <p><?=$Description?></p>
-        <p><?=$Genre?></p>
-        <p><?=$SelectedGenreID?></p>
-        <p><?=$uploadquery?></p>
-      <?php elseif ($usercreation==true):?>
-        <h4><?=$newUserName?></h4>
-        <h4><?=$newUserID?></h4>
-        <h4><?=$newPassword?></h4>
-        <h4><?=$hashedPassword?></h4>
-    <?php elseif($uploadgenre==true): ?>
-        <h2>GENRE CREATED</h2>
     <?php endif ?>
       <?php if($_POST['submit']=="Edit Podcast" || $_POST['submit']=="Save Edit"): ?>
         <form class="editPodcast" action="process.php" method="post">
@@ -126,7 +111,6 @@ if($_POST){
             </select>
         </form>
         <a href="profile.php?creator=<?=$_SESSION['userid']?>">Back to your Profile</a>
-      <?php else: ?>
       <?php endif ?>
       <?php if($_POST['submit']=="Delete Podcast"):?>
         <form class="deletePodcast" action="process.php" method="post">
@@ -144,7 +128,5 @@ if($_POST){
         <p>The podcast has been deleted</p>
         <a href="profile.php?creator=<?=$_SESSION['username']?>">Back to your Profile</a>
       <?php endif ?>
-      <p><?=$test?></p>
-    <?php endif ?>
   </body>
 </html>

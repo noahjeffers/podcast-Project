@@ -31,17 +31,3 @@ session_start();
 
 
 ?>
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    <a href=<?=$link?>>Link</a>
-    <p><?=$link?></p>
-    <p><?=$commentName?></p>
-    <p><?=$commentContent?></p>
-    <p><?=$commentFK?></p>
-  </body>
-</html>
