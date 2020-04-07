@@ -10,6 +10,7 @@
 //LOAD
   session_start();
   require('connect.php');
+  require('C:\Users\Owner\vendor\autoload.php');
 
   $query = "SELECT * FROM creator WHERE GenreID <> 1 AND username <> 'ADMIN' ";
   $statement = $db->prepare($query);

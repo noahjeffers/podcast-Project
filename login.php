@@ -26,6 +26,7 @@ else {
       $_SESSION['description']=$user['Description'];
       $_SESSION['genreid']=$user['GenreID'];
       $profile = "profile.php?creator=".$user['UserID'];
+
       header("Location: $profile");
     }
 

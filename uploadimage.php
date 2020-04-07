@@ -1,7 +1,7 @@
 <?php
 session_start();
 require('connect.php');
-
+  require('C:\Users\Owner\vendor\Gumlet\php-image-resize\lib\ImageResize.php');
 if (!isset($_SESSION['userid'])) {
   header("Location: index.php");
 }
@@ -32,6 +32,7 @@ if ($_POST['submit']=='Upload Image') {
   $image_upload_detected = isset($_FILES['image']) && ($_FILES['image']['error'] === 0);
   $upload_error_detected = isset($_FILES['image']) && ($_FILES['image']['error'] > 0);
 
+
   if ($image_upload_detected) {
       $image_filename        = $_FILES['image']['name'];
       $temporary_image_path  = $_FILES['image']['tmp_name'];
@@ -52,7 +53,11 @@ if ($_POST['submit']=='Upload Image') {
           $imagestatement->bindValue('userID',$_SESSION['userid']);
 
           $imagestatement->execute();
-          header("Location: $profile");
+
+          $resizeImage= new \Gumlet\ImageResize($image);
+          $resizeImage->scale(50);
+          $resizeImage->save($image);
+          //header("Location: $profile");
       }
   }
 }

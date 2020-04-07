@@ -21,6 +21,7 @@ if($_POST){
   $query = "SELECT genre,genreid FROM genre ";
   $genrestatement = $db->prepare($query);
   $genrestatement->execute();
+  $updateDate = date('yy-m-d H:i:s');
 
   $currentPodcast=$_POST['currentPodcast'];
   $creatorID = substr($currentPodcast,0,4);
@@ -31,14 +32,15 @@ if($_POST){
         $newTitle=$_POST['editTitle'];
         $newDescription=$_POST['editDescription'];
         $newGenreID=$_POST['genre'];
-        $editQuery="UPDATE Podcast SET Title=:newTitle, Description=:newDescription, GenreID=:newGenreID WHERE PodcastID =:currentPodcast";
+        $editQuery="UPDATE Podcast SET Title=:newTitle, Description=:newDescription, GenreID=:newGenreID, LastEdited=:updateDate WHERE PodcastID =:currentPodcast";
         $editStatement=$db->prepare($editQuery);
         $editStatement->bindValue(':newTitle',$newTitle);
         $editStatement->bindValue(':newDescription',$newDescription);
         $editStatement->bindValue(':newGenreID',$newGenreID);
+        $editStatement->bindValue(':updateDate',$updateDate);
         $editStatement->bindValue(':currentPodcast',$currentPodcast);
         $editStatement->execute();
-        $test="Edit";
+        $test="$updateDate";
       }
       else {
         $error=true;
@@ -123,7 +125,7 @@ if($_POST){
               <?php endif ?>
             </select>
         </form>
-        <a href="profile.php?creator=<?=$_SESSION['username']?>">Back to your Profile</a>
+        <a href="profile.php?creator=<?=$_SESSION['userid']?>">Back to your Profile</a>
       <?php else: ?>
       <?php endif ?>
       <?php if($_POST['submit']=="Delete Podcast"):?>
