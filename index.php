@@ -6,7 +6,10 @@
 // Podcast needs a back to profile link
 
 // ADMIN needs to be able to delete any comments
-
+$sort = 'az';
+if(filter_input(INPUT_GET,"sort", FILTER_SANITIZE_SPECIAL_CHARS)){
+  $sort=filter_input(INPUT_GET,"sort", FILTER_SANITIZE_SPECIAL_CHARS);
+}
 //LOAD
   session_start();
   require('connect.php');
@@ -20,9 +23,41 @@
   $genreListStatement = $db->prepare($genreListQuery);
   $genreListStatement->execute();
 
-  $podcastquery = "SELECT * FROM podcast WHERE GenreID <>1";
-  $podcaststatement = $db->prepare($podcastquery);
-  $podcaststatement->execute();
+  if($sort=='az'){
+    $sortedPodcastQuery = "SELECT * FROM podcast WHERE GenreID <>1 ORDER BY Title ";
+    $podcaststatement = $db->prepare($sortedPodcastQuery);
+    $podcaststatement->execute();     //A-Z
+  }
+  elseif ($sort=='za') {
+    $sortedPodcastQuery = "SELECT * FROM podcast WHERE GenreID <>1 ORDER BY Title DESC";
+    $podcaststatement = $db->prepare($sortedPodcastQuery);
+    $podcaststatement->execute();      //Z-A
+  }
+  elseif ($sort=='oldest') {
+    $podcastquery = "SELECT * FROM podcast WHERE GenreID <>1 ORDER BY LastEdited ";
+    $podcaststatement = $db->prepare($podcastquery);
+    $podcaststatement->execute();   //Oldest
+  }
+  elseif ($sort=='newest') {
+    $podcastquery = "SELECT * FROM podcast WHERE GenreID <>1 ORDER BY LastEdited DESC";
+    $podcaststatement = $db->prepare($podcastquery);
+    $podcaststatement->execute();   //Newest
+  }
+  elseif ($sort=='uploadedFirst') {
+    $sortedPodcastQuery = "SELECT * FROM podcast WHERE GenreID <>1 ORDER BY UploadDate ";
+    $podcaststatement = $db->prepare($sortedPodcastQuery);
+    $podcaststatement->execute();
+  }
+  else{
+    $sortedPodcastQuery = "SELECT * FROM podcast WHERE GenreID <>1 ORDER BY UploadDate DESC";
+    $podcaststatement = $db->prepare($sortedPodcastQuery);
+    $podcaststatement->execute();
+  }
+
+
+
+
+
 
 
 
@@ -130,19 +165,43 @@ body{
             <div class="col-9">
 
               <div class="Podcasts">
-                <h3>Most Recent Podcasts</h3>
-                <ul class="list-group">
-                  <?php if ($podcaststatement -> rowCount()<1):?>
-                      <h2>Error - No Podcasts found</h2>
-                  <?php else: ?>
-                    <?php foreach ($podcaststatement as $podcast): ?>
-                      <li class="list-group-item">
-                        <a href="podcast.php?podcastid=<?=$podcast['PodcastID']?>"><?=$podcast['Title']?></a>
-                      </li>
+                <h3>Podcasts</h3>
 
-                      <?php endforeach ?>
-                  <?php endif ?>
+
+                <ul class="nav nav-tabs">
+                  <li class="nav-item">
+                    <a class="nav-link <?php if($sort=='az'){echo "active";}?>" href="index.php?sort=az">A-Z</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link <?php if($sort=='za'){echo "active";}?>" href="index.php?sort=za">Z-A</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link <?php if($sort=='oldest'){echo "active";}?>" href="index.php?sort=oldest">Oldest-Newest</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link <?php if($sort=='newest'){echo "active";}?>" href="index.php?sort=newest">Newest-Oldest</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link <?php if($sort=='uploadedFirst'){echo "active";}?>" href="index.php?sort=uploadedFirst">First Uploaded</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link <?php if($sort=='uploadedLast'){echo "active";}?>" href="index.php?sort=uploadedLast">Last Uploaded</a>
+                  </li>
                 </ul>
+                <div class="container">
+                  <ul class="list-group">
+                    <?php if ($podcaststatement -> rowCount()<1):?>
+                        <h2>Error - No Podcasts found</h2>
+                    <?php else: ?>
+                      <?php foreach ($podcaststatement as $podcast): ?>
+                        <li class="list-group-item">
+                          <a href="podcast.php?podcastid=<?=$podcast['PodcastID']?>"><?=$podcast['Title']?></a>
+                        </li>
+
+                        <?php endforeach ?>
+                    <?php endif ?>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>

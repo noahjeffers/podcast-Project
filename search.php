@@ -270,7 +270,8 @@ else {
               <?php endif ?>
 
               <?php if($newCommentStatement->rowCount()>0): ?>
-                <h3>Refined Comment Results</h3>
+                <h3>Comment Results</h3>
+                <small>Comment results can't be refined by Genre</small>
                 <ul>
                   <?php foreach ($newCommentStatement as $comment):?>
                     <li>
