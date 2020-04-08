@@ -3,35 +3,94 @@ require('connect.php');
 session_start();
 $error=false;
 $errorMessage="Nothing was found, please try a different search.";
+$refined=false;
+
 $genreListQuery = "SELECT genre FROM genre WHERE GenreID <> 1  ";
 $genreListStatement = $db->prepare($genreListQuery);
 $genreListStatement->execute();
-// if(!isset($_POST['search'])){
-//   $error=true;
-// }
-$postSearch = strtolower($_POST['search']);
-$search='%'.$postSearch.'%';
-$creatorQuery="SELECT * FROM Creator WHERE GenreID <> 1 AND LOWER(UserName) LIKE :searchName OR  GenreID <> 1 AND LOWER(Description) LIKE :searchDescription";
-$creatorStatement=$db->prepare($creatorQuery);
-$creatorStatement->bindValue(':searchName',$search);
-$creatorStatement->bindValue(':searchDescription',$search);
-$creatorStatement->execute();
+if(!($_POST)){
+  header("Location: index.php");
+}
+else {
+  if (!($_POST['submit']=="Refine")||$_POST['genre']==1) {
 
-$podcastQuery="SELECT * FROM Podcast WHERE GenreID <> 1 AND LOWER(Title) LIKE :searchTitle OR  GenreID <> 1 AND LOWER(Description) LIKE :searchPodcastDescription";
-$podcastStatement=$db->prepare($podcastQuery);
-$podcastStatement->bindValue(':searchTitle',$search);
-$podcastStatement->bindValue(':searchPodcastDescription',$search);
-$podcastStatement->execute();
+    if(!($_POST['submit']=="Refine")){
 
-$commentQuery ="SELECT * FROM Comment WHERE LOWER(Content) LIKE :searchContent OR LOWER(Name) LIKE :searchName";
-$commentStatement=$db->prepare($commentQuery);
-$commentStatement->bindValue(':searchContent',$search );
-$commentStatement->bindValue(':searchName',$search);
-$commentStatement->execute();
+      $originalSearch= strtolower($_POST['search']);
+    }
+    else{
+            $originalSearch=strtolower($_POST['originalSearch']);
+    }
+
+    $search='%'.$originalSearch.'%';
+    $creatorQuery="SELECT * FROM Creator WHERE GenreID <> 1 AND LOWER(UserName) LIKE :searchName OR  GenreID <> 1 AND LOWER(Description) LIKE :searchDescription";
+    $creatorStatement=$db->prepare($creatorQuery);
+    $creatorStatement->bindValue(':searchName',$search);
+    $creatorStatement->bindValue(':searchDescription',$search);
+    $creatorStatement->execute();
+
+    $podcastQuery="SELECT * FROM Podcast WHERE GenreID <> 1 AND LOWER(Title) LIKE :searchTitle OR  GenreID <> 1 AND LOWER(Description) LIKE :searchPodcastDescription";
+    $podcastStatement=$db->prepare($podcastQuery);
+    $podcastStatement->bindValue(':searchTitle',$search);
+    $podcastStatement->bindValue(':searchPodcastDescription',$search);
+    $podcastStatement->execute();
+
+    $commentQuery ="SELECT * FROM Comment WHERE LOWER(Content) LIKE :searchContent OR LOWER(Name) LIKE :searchName";
+    $commentStatement=$db->prepare($commentQuery);
+    $commentStatement->bindValue(':searchContent',$search );
+    $commentStatement->bindValue(':searchName',$search);
+    $commentStatement->execute();
+    if(($creatorStatement->rowCount()<1)&&($podcastStatement->rowCount()<1)&&($commentStatement->rowCount()<1)){
+      $error = true;
+    }
+  }
+  else{
+
+      if (($_POST['submit']=="Refine")&&($error==false)) {
+        $refined=true;
+        $originalSearch= strtolower($_POST['originalSearch']);
+        $search='%'.$originalSearch.'%';
+        $genre=$_POST['genre'];
+        $newCreatorQuery="SELECT * FROM Creator WHERE GenreID = :genreA AND LOWER(UserName) LIKE :searchName OR  GenreID = :genreA AND LOWER(Description) LIKE :searchDescription";
+        $newCreatorStatement=$db->prepare($newCreatorQuery);
+        $newCreatorStatement->bindValue(':genreA',$genre);
+        $newCreatorStatement->bindValue(':searchName',$search);
+        $newCreatorStatement->bindValue(':searchDescription',$search);
+        $newCreatorStatement->execute();
+
+        $newPodcastQuery="SELECT * FROM Podcast WHERE  GenreID = :genreB AND LOWER(Title) LIKE :searchTitle OR  GenreID = :genreB AND LOWER(Description) LIKE :searchPodcastDescription";
+        $newPodcastStatement=$db->prepare($newPodcastQuery);
+        $newPodcastStatement->bindValue(':genreB',$genre);
+        $newPodcastStatement->bindValue(':searchTitle',$search);
+        $newPodcastStatement->bindValue(':searchPodcastDescription',$search);
+        $newPodcastStatement->execute();
+
+        $newCommentQuery ="SELECT * FROM Comment WHERE LOWER(Content) LIKE :searchContent OR LOWER(Name) LIKE :searchName";
+        $newCommentStatement=$db->prepare($newCommentQuery);
+        $newCommentStatement->bindValue(':searchContent',$search );
+        $newCommentStatement->bindValue(':searchName',$search);
+        $newCommentStatement->execute();
+        if(($newCreatorStatement->rowCount()<1)&&($newPodcastStatement->rowCount()<1)&&($newCommentStatement->rowCount()<1)){
+          $error = true;
+        }
+
+      }
+
+  }
+
+  }
+
+
+  $genreSelectQuery="SELECT * FROM Genre WHERE GenreID<>1";
+  $genreSelectStatement=$db->prepare($genreSelectQuery);
+  $genreSelectStatement->execute();
+
+
 
 ?>
 
 <!DOCTYPE html>
+
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -106,60 +165,128 @@ $commentStatement->execute();
             </ul>
             <form class="form-inline my-2 my-lg-0" action="search.php" method="post">
               <input id="search" class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              <input class="btn btn-outline-success my-2 my-sm-0" type="submit" name="submit" value="Search">
             </form>
           </div>
         </nav>
       </div>
-      <ul class="nav justify-content-end">
-        <li class="nav-item">
-          <p class="nav-link active">Refine your Search by Genre</p>
-        </li>
-        <li class="nav-item">
-          <select class="nav-link" name="">
-            <option value="1">All</option>
-          </select>
-        </li>
-      </ul>
-      <?php if($creatorStatement->rowCount()>0): ?>
-        <h3>Creator Search Results</h3>
-        <ul>
-          <?php foreach ($creatorStatement as $creator):?>
-            <li>
-              <p><?=$creator['UserName']?></p>
-              <p><?=$creator['Description']?></p>
-              <a href="profile.php?creator=<?=$creator['UserID']?>">Link to Creator</a>
-            </li>
-          <?php endforeach ?>
-        </ul>
-      <?php endif ?>
 
-      <?php if($podcastStatement->rowCount()>0): ?>
-        <h3>Podcast Search Results</h3>
-        <ul>
-          <?php foreach ($podcastStatement as $podcast):?>
-            <li>
-              <p><?=$podcast['Title']?></p>
-              <p><?=$podcast['Description']?></p>
-              <a href="podcast.php?podcastid=<?=$podcast['PodcastID']?>">Link to Podcast</a>
-            </li>
-          <?php endforeach ?>
-        </ul>
-      <?php endif ?>
 
-      <?php if($commentStatement->rowCount()>0): ?>
-        <h3>Comment Search Results</h3>
-        <ul>
-          <?php foreach ($commentStatement as $comment):?>
-            <li>
-              <p><?=$comment['Content']?></p>
-              <p><?=$comment['Name']?></p>
-              <a href="podcast.php?podcastid=<?=$comment['PodcastID']?>">Link to Comment</a>
-            </li>
-          <?php endforeach ?>
-        </ul>
-      <?php endif ?>
 
+      <div class="container">
+        <div class="row">
+          <div class="col-3">
+            <h4>Refine your search</h4><br><br>
+            <form class="" method="post">
+              <ul class="nav justify-content">
+                <li class="nav-item">
+                  <input type="text" class="nav-link " name="originalSearch" value="<?=$originalSearch?>"></input><br>
+                </li>
+                <li class="nav-item">
+                  <select class="nav-link" name="genre">
+                    <option value="1">All</option>
+                    <?php foreach ($genreSelectStatement as $genreSelect):?>
+                      <option value="<?=$genreSelect['GenreID']?>"><?=$genreSelect['Genre']?></option>
+                    <?php endforeach ?>
+                  </select>
+                </li>
+              </ul><br>
+              <input class="btn btn-primary" type="submit" name="submit" value="Refine">
+            </form>
+          </div>
+          <div class="col-9">
+            <?php if ($error==true): ?>
+              <?=$errorMessage?>
+            <?php endif ?>
+            <?php if ($refined==false): ?>
+              <?php if($creatorStatement->rowCount()>0): ?>
+                <h3>Creator Search Results</h3>
+                <ul>
+                  <?php foreach ($creatorStatement as $creator):?>
+                    <li>
+                      <p><?=$creator['UserName']?></p>
+                      <p><?=$creator['Description']?></p>
+                      <a href="profile.php?creator=<?=$creator['UserID']?>">Link to Creator</a>
+                    </li>
+                  <?php endforeach ?>
+                </ul>
+              <?php endif ?>
+
+              <?php if($podcastStatement->rowCount()>0): ?>
+                <h3>Podcast Search Results</h3>
+                <ul>
+                  <?php foreach ($podcastStatement as $podcast):?>
+                    <li>
+                      <p><?=$podcast['Title']?></p>
+                      <p><?=$podcast['Description']?></p>
+                      <a href="podcast.php?podcastid=<?=$podcast['PodcastID']?>">Link to Podcast</a>
+                    </li>
+                  <?php endforeach ?>
+                </ul>
+              <?php endif ?>
+
+              <?php if($commentStatement->rowCount()>0): ?>
+                <h3>Comment Search Results</h3>
+                <ul>
+                  <?php foreach ($commentStatement as $comment):?>
+                    <li>
+                      <p><?=$comment['Content']?></p>
+                      <p><?=$comment['Name']?></p>
+                      <a href="podcast.php?podcastid=<?=$comment['PodcastID']?>">Link to Comment</a>
+                    </li>
+                  <?php endforeach ?>
+                </ul>
+              <?php endif ?>
+            <?php endif ?>
+            <?php if($refined==true): ?>
+
+
+              <h3>Refined</h3>
+
+              <?php if($newCreatorStatement->rowCount()>0): ?>
+                <h3>Creator Search Results</h3>
+                <ul>
+                  <?php foreach ($newCreatorStatement as $creator):?>
+                    <li>
+                      <p><?=$creator['UserName']?></p>
+                      <p><?=$creator['Description']?></p>
+                      <a href="profile.php?creator=<?=$creator['UserID']?>">Link to Creator</a>
+                    </li>
+                  <?php endforeach ?>
+                </ul>
+              <?php endif ?>
+
+              <?php if($newCreatorStatement->rowCount()>0): ?>
+                <h3>Refined Podcast Results</h3>
+                <ul>
+                  <?php foreach ($newPodcastStatement as $podcast):?>
+                    <li>
+                      <p><?=$podcast['Title']?></p>
+                      <p><?=$podcast['Description']?></p>
+                      <a href="podcast.php?podcastid=<?=$podcast['PodcastID']?>">Link to Podcast</a>
+                    </li>
+                  <?php endforeach ?>
+                </ul>
+              <?php endif ?>
+
+              <?php if($newCommentStatement->rowCount()>0): ?>
+                <h3>Refined Comment Results</h3>
+                <ul>
+                  <?php foreach ($newCommentStatement as $comment):?>
+                    <li>
+                      <p><?=$comment['Content']?></p>
+                      <p><?=$comment['Name']?></p>
+                      <a href="podcast.php?podcastid=<?=$comment['PodcastID']?>">Link to Comment</a>
+                    </li>
+                  <?php endforeach ?>
+                </ul>
+              <?php endif ?>
+            <?php endif ?>
+
+              </ul>
+            </div>
+          </div>
+        </div>
 
     </div>
       <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
