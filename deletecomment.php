@@ -1,4 +1,7 @@
 <?php
+
+// SANITZED ////////////////////////////////////////////////////////////////////////////////////////////
+
 require('connect.php');
 session_start();
 if (!isset($_SESSION['userid'])) {
@@ -7,12 +10,12 @@ if (!isset($_SESSION['userid'])) {
 $error=false;
 $success = false;
 if (isset($_GET['commentid'])&&isset($_GET['podcastid'])) {
-  if (!filter_input(INPUT_GET,'commentid',FILTER_VALIDATE_INT)||(!filter_input(INPUT_GET,'podcastid',FILTER_SANITIZE_SPECIAL_CHARS))) {
+  if (!filter_input(INPUT_GET,'commentid',FILTER_VALIDATE_INT)||(!filter_input(INPUT_GET,'podcastid',FILTER_SANITIZE_SPECIAL_CHARS))) {  ////////////////////////////////////////////////////////////////////////////////////////////
     $error=true;
   }
   else{
-    $commentID=filter_input(INPUT_GET,'commentid',FILTER_VALIDATE_INT);
-    $podcastID=filter_input(INPUT_GET,'podcastid',FILTER_SANITIZE_SPECIAL_CHARS);
+    $commentID=filter_input(INPUT_GET,'commentid',FILTER_VALIDATE_INT); ////////////////////////////////////////////////////////////////////////////////////////////
+    $podcastID=filter_input(INPUT_GET,'podcastid',FILTER_SANITIZE_SPECIAL_CHARS); ////////////////////////////////////////////////////////////////////////////////////////////
     $query = "SELECT * FROM Comment WHERE CommentID = :commentID AND PodcastID = :podcastID";
     $statement = $db->prepare($query);
     $statement->bindValue(':commentID',$commentID);

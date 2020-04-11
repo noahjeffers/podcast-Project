@@ -1,4 +1,7 @@
 <?php
+
+// SANITZED ////////////////////////////////////////////////////////////////////////////////////////////
+
 session_start();
 require('connect.php');
 if(!isset($_SESSION['username'])){
@@ -17,14 +20,14 @@ $warning=false;
 
 
 if($_POST){
-    $newUserName=filter_input(INPUT_POST,'username',FILTER_SANITIZE_SPECIAL_CHARS);
+    $newUserName=filter_input(INPUT_POST,'username',FILTER_SANITIZE_SPECIAL_CHARS);  ////////////////////////////////////////////////////////////////////////////////////////////
     if(strtolower($newUserName)=='admin'){
       $warning=true;
     }else{
-      $newDescription=filter_input(INPUT_POST,'description',FILTER_SANITIZE_SPECIAL_CHARS);
-      $newGenre = $_POST['genre'];
+      $newDescription=filter_input(INPUT_POST,'description',FILTER_SANITIZE_SPECIAL_CHARS); ////////////////////////////////////////////////////////////////////////////////////////////
+      $newGenre = filter_input(INPUT_POST,'genre',FILTER_VALIDATE_INT); ////////////////////////////////////////////////////////////////////////////////////////////
       //retrieve the GenreID based off the selected genre radio button
-      $Genre = $_POST['genre'];
+      $Genre = filter_input(INPUT_POST,'genre',FILTER_VALIDATE_INT); ////////////////////////////////////////////////////////////////////////////////////////////
       $genrequery = "SELECT GenreID FROM Genre WHERE Genre = :genre";
       $genrestatement = $db->prepare($genrequery);
       $genrestatement->bindValue(':genre',$Genre);

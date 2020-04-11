@@ -1,4 +1,7 @@
 <?php
+
+// SANITZED ////////////////////////////////////////////////////////////////////////////////////////////
+
 session_start();
 require('connect.php');
 
@@ -19,8 +22,8 @@ if($_SESSION['username']=='ADMIN')
 {
   if ($_POST['submit']=="Create New User") {
 
-    $newUserName = filter_input(INPUT_POST,'username',FILTER_SANITIZE_SPECIAL_CHARS);
-    $newPassword = filter_input(INPUT_POST,'password',FILTER_SANITIZE_SPECIAL_CHARS);
+    $newUserName = filter_input(INPUT_POST,'username',FILTER_SANITIZE_SPECIAL_CHARS); ////////////////////////////////////////////////////////////////////////////////////////////
+    $newPassword = filter_input(INPUT_POST,'password',FILTER_SANITIZE_SPECIAL_CHARS); ////////////////////////////////////////////////////////////////////////////////////////////
     $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
     ///// DEFAULT VALUES
@@ -41,7 +44,7 @@ if($_SESSION['username']=='ADMIN')
       //redirect that isnt working ///////////////////////////////////////////////////////////////////////////
       header("Location: adminhomepage.php");
     }
-    $newGenre = $_POST['genre'];
+    $newGenre = filter_input(INPUT_POST,'genre',FILTER_SANITIZE_SPECIAL_CHARS); ////////////////////////////////////////////////////////////////////////////////////////////
     $genreQuery="INSERT INTO Genre(Genre) VALUES(:genre)";
     $genreStatement=$db->prepare($genreQuery);
     $genreStatement->bindValue(':genre',$newGenre);
@@ -49,8 +52,8 @@ if($_SESSION['username']=='ADMIN')
   }
   if ($_POST['submit']=="Edit Genre") {
 
-    $editedGenre=$_POST['editGenre'];
-    $SelectedGenreID =$_POST['genre'];
+    $editedGenre=filter_input(INPUT_POST,'editGenre',FILTER_SANITIZE_SPECIAL_CHARS); ////////////////////////////////////////////////////////////////////////////////////////////
+    $SelectedGenreID =filter_input(INPUT_POST,'genre',FILTER_VALIDATE_INT);////////////////////////////////////////////////////////////////////////////////////////////
     $genreQuery="UPDATE Genre SET Genre=:genre WHERE GenreID =:genreID";
     $genreStatement=$db->prepare($genreQuery);
     $genreStatement->bindValue(':genre',$editedGenre);
@@ -58,7 +61,7 @@ if($_SESSION['username']=='ADMIN')
     $genreStatement->execute();
   }
   if ($_POST['submit']=="Delete Genre") {
-    $SelectedGenreID =$_POST['genre'];
+    $SelectedGenreID =filter_input(INPUT_POST,'genre',FILTER_VALIDATE_INT);////////////////////////////////////////////////////////////////////////////////////////////
     $genreQuery="DELETE FROM Genre WHERE GenreID =:genreID";
     $genreStatement=$db->prepare($genreQuery);
     $genreStatement->bindValue(':genreID',$SelectedGenreID);

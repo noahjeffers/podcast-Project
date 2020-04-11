@@ -1,14 +1,13 @@
 <?php
-// All Pages need to have input sanitized and validated
+// SANITZED ////////////////////////////////////////////////////////////////////////////////////////////
 
-// Podcast Upload needs to have Genre put into DropDown List
 
-// Podcast needs a back to profile link
 
-// ADMIN needs to be able to delete any comments
+
+
 $sort = 'az';
-if(filter_input(INPUT_GET,"sort", FILTER_SANITIZE_SPECIAL_CHARS)){
-  $sort=filter_input(INPUT_GET,"sort", FILTER_SANITIZE_SPECIAL_CHARS);
+if(filter_input(INPUT_GET,"sort", FILTER_SANITIZE_SPECIAL_CHARS)){      ////////////////////////////////////////////////////////////////////////////////////////////
+  $sort=filter_input(INPUT_GET,"sort", FILTER_SANITIZE_SPECIAL_CHARS); ////////////////////////////////////////////////////////////////////////////////////////////
 }
 //LOAD
   session_start();

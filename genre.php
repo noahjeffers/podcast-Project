@@ -1,4 +1,7 @@
 <?php
+
+// SANITZED ////////////////////////////////////////////////////////////////////////////////////////////
+
 session_start();
 require('connect.php');
 
@@ -11,7 +14,7 @@ if(!isset($_GET['genre'])){
   $genreListStatement->execute();
 
 
-$genre = $_GET['genre'];
+$genre = filter_input(INPUT_GET,'genre',FILTER_SANITIZE_SPECIAL_CHARS);  ////////////////////////////////////////////////////////////////////////////////////////////
 $genreQuery="SELECT * FROM Podcast JOIN Genre ON Podcast.GenreID = Genre.GenreID WHERE Genre=:genre";
 $genreStatement = $db->prepare($genreQuery);
 $genreStatement->bindValue(':genre',$genre);

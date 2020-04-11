@@ -1,4 +1,7 @@
 <?php
+
+// SANITIZED /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 require('connect.php');
 session_start();
 $GETCreator = ' ';
@@ -9,9 +12,9 @@ if(!isset($_GET['creator'])){
 $genreListQuery = "SELECT genre FROM genre WHERE GenreID <> 1  ";
 $genreListStatement = $db->prepare($genreListQuery);
 $genreListStatement->execute();
-//
-// $GETCreator = filter_input(INPUT_GET, 'creator', FILTER_SANITIZE_SPECIAL_CHARS);
-$GETCreator = $_GET['creator'];
+
+
+$GETCreator = filter_input(INPUT_GET,'creator',FILTER_VALIDATE_INT); /////////////////////////////////////////////////////////////////////////////////////////////
 if($GETCreator=='9016'){
   header("Location: index.php");
 }
@@ -51,17 +54,20 @@ if (isset($_SESSION['userid'])) {
     <style>
     body{
       background-color: black;
+      padding-bottom: 10px;
+      margin-bottom: 50px;
     }
     .jumbotron{
       background-color: grey;
       text-align: center;
       margin-bottom: 0;
     }
-    .card:nth-child(even){
-      background-color: orange;
+    .card{
+      margin: auto;
     }
     .container{
       background-color: white;
+      padding-bottom: 15px;
     }
     </style>
   </head>
@@ -130,7 +136,13 @@ if (isset($_SESSION['userid'])) {
       </ul>
     </div>
     <?php if ($creator['logo']!=""): ?>
-        <img src="<?=$creator['logo']?>" alt="<?=$creator['logo']?>">
+      <div class="card border-dark" style="width: 18rem;">
+        <img src="<?=$creator['logo']?>" alt="<?=$creator['logo']?>" class="card-img-top" >
+        <div class="card-body">
+          <p class="card-text"><?=$creator['username']?> album art</p>
+        </div>
+      </div>
+
     <?php endif ?>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

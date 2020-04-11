@@ -1,4 +1,8 @@
 <?php
+
+// Sanitized //////////////////////////////////////////////////////////////
+
+
 session_start();
 require('connect.php');
 if(!isset($_SESSION['userid'])){
@@ -44,9 +48,9 @@ if($_POST){
           $date=date("Y/m/d");
           $PodcastID = $creatorid."-".$filename."-".$date;
 
-          $Title = $_POST['title'];//sanitized\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-          $Description = $_POST['description'];//sanitized\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-          $SelectedGenreID =$_POST['genre'];
+          $Title = filter_input(INPUT_POST,'title',FILTER_SANITIZE_SPECIAL_CHARS);//sanitized\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+          $Description =filter_input(INPUT_POST,'description',FILTER_SANITIZE_SPECIAL_CHARS);//sanitized\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+          $SelectedGenreID =filter_input(INPUT_POST,'genre',FILTER_VALIDATE_INT);
 
           $uploadquery= "INSERT INTO podcast(PodcastID,Title,Description,GenreID) VALUES(:PodcastID,:Title,:Description,:GenreValue)";
           $uploadStatement = $db->prepare($uploadquery);
@@ -108,10 +112,6 @@ if($_POST){
       </form>
     </div>
 
-
-    <p><?=$_POST['title']?></p>
-    <p><?=$_POST['description']?></p>
-    <p><?=$_POST['genre']?></p>
     <?php if($_POST): ?>
       <?php if ($upload_error_detected): ?>
 

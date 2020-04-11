@@ -1,4 +1,7 @@
 <?php
+
+// SANITZED ///////////////////////////////////////////////////////////////////////
+
 session_start();
 require('connect.php');
 //filter and sanitize the GET
@@ -6,7 +9,7 @@ if(!isset($_GET['podcastid'])){
   header('Location: index.php');
 }
 else{
-  $podcastID = filter_input(INPUT_GET,'podcastid',FILTER_SANITIZE_SPECIAL_CHARS);
+  $podcastID = filter_input(INPUT_GET,'podcastid',FILTER_SANITIZE_SPECIAL_CHARS);  ////////////////////////////////////////////////
   $podcastquery = "SELECT * FROM podcast WHERE PodcastID = :podcastID";
   $podcaststatement = $db->prepare($podcastquery);
   $podcaststatement -> bindValue(':podcastID', $podcastID);

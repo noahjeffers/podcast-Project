@@ -1,4 +1,7 @@
 <?php
+
+// NO POST TO SANITIZE ////////////////////////////////////////////////////////////////////////////////////////////
+
 session_start();
 require('connect.php');
   require('C:\Users\Owner\vendor\Gumlet\php-image-resize\lib\ImageResize.php');

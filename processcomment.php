@@ -1,4 +1,7 @@
 <?php
+
+// SANITIZED ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 require('connect.php');
 session_start();
 //Posted from the Podcast page
@@ -10,9 +13,9 @@ session_start();
   }
   else {
     //SANITZE
-    $commentName = $_POST['name'];
-    $commentContent =$_POST['content'];
-    $commentFK = $_POST['podcastID'];
+     $commentName = filter_input(INPUT_POST,'name',FILTER_SANITIZE_SPECIAL_CHARS); //////////////////////////////////////////////////////////////////////
+    $commentContent =filter_input(INPUT_POST,'content',FILTER_SANITIZE_SPECIAL_CHARS);
+    $commentFK = filter_input(INPUT_POST,'podcastID',FILTER_SANITIZE_SPECIAL_CHARS);
 
     //create redirect link
     $return = "podcast.php?podcastid=".$commentFK;

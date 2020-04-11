@@ -1,4 +1,7 @@
 <?php
+
+// SANITIZED ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
 session_start();
 require('connect.php');
 
@@ -23,15 +26,15 @@ if($_POST){
   $genrestatement->execute();
   $updateDate = date('yy-m-d H:i:s');
 
-  $currentPodcast=$_POST['currentPodcast'];
+  $currentPodcast=filter_input(INPUT_POST,'currentPodcast',FILTER_SANITIZE_SPECIAL_CHARS); ////////////////////////////////////////////////////////////////////////////////////////////
   $creatorID = substr($currentPodcast,0,4);
 
     if($_POST['submit']=="Save Edit"){
       //update
       if ($creatorID==$_SESSION['userid']) {
-        $newTitle=$_POST['editTitle'];
-        $newDescription=$_POST['editDescription'];
-        $newGenreID=$_POST['genre'];
+        $newTitle=filter_input(INPUT_POST,'editTitle',FILTER_SANITIZE_SPECIAL_CHARS); ////////////////////////////////////////////////////////////////////////////////////////////
+        $newDescription=filter_input(INPUT_POST,'editDescription',FILTER_SANITIZE_SPECIAL_CHARS); ////////////////////////////////////////////////////////////////////////////////////////////
+        $newGenreID=filter_input(INPUT_POST,'genre',FILTER_VALIDATE_INT); ////////////////////////////////////////////////////////////////////////////////////////////
         $editQuery="UPDATE Podcast SET Title=:newTitle, Description=:newDescription, GenreID=:newGenreID, LastEdited=:updateDate WHERE PodcastID =:currentPodcast";
         $editStatement=$db->prepare($editQuery);
         $editStatement->bindValue(':newTitle',$newTitle);
@@ -48,7 +51,7 @@ if($_POST){
       }
     }
     else if($_POST['submit']=="Delete Podcast"||$_POST['submit']=="Delete"){
-      $podcastID=$_POST['currentPodcast'];
+      $podcastID=filter_input(INPUT_POST,'currentPodcast',FILTER_SANITIZE_SPECIAL_CHARS); //////////////////////////////////////////////////////////////////////
       $firstIndex=strrpos($podcastID,'-');
       $firstTrim=substr($podcastID,0,$firstIndex);
       $secondIndex=strpos($firstTrim,'-',0)+1;

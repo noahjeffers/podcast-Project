@@ -1,4 +1,7 @@
 <?php
+
+// SANITZED ////////////////////////////////////////////////////////////////////////////////////////////
+
   session_start();
   require('connect.php');
   $login = false;
@@ -10,8 +13,8 @@ else {
   /// FILTER AND strtolower NEEDED/////////////////////////////////////////////////////////////////////////////////////
   if(isset($_POST['username'])&& $login==false)
   {
-    $username = strtolower(filter_input(INPUT_POST,"username",FILTER_SANITIZE_SPECIAL_CHARS));
-    $password = $_POST["password"];//HASH Password?
+    $username = strtolower(filter_input(INPUT_POST,"username",FILTER_SANITIZE_SPECIAL_CHARS)); ////////////////////////////////////////////////////////////////////////////////////////////
+    $password = filter_input(INPUT_POST,'password',FILTER_SANITIZE_SPECIAL_CHARS);  ////////////////////////////////////////////////////////////////////////////////////////////
 
     $query = "SELECT UserID, UserName, Description, Password, GenreID FROM creator WHERE username = :username";
     $statement = $db->prepare($query);

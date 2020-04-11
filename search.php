@@ -1,4 +1,7 @@
 <?php
+
+// Sanitized //////////////////////////////////////////////////////////////////////////////
+
 require('connect.php');
 session_start();
 $error=false;
@@ -16,10 +19,10 @@ else {
 
     if(!($_POST['submit']=="Refine")){
 
-      $originalSearch= strtolower($_POST['search']);
+      $originalSearch= strtolower(filter_input(INPUT_POST,'search',FILTER_SANITIZE_SPECIAL_CHARS));           ////////////////////////////////////////////////
     }
     else{
-            $originalSearch=strtolower($_POST['originalSearch']);
+            $originalSearch=strtolower(filter_input(INPUT_POST,'originalSearh',FILTER_SANITIZE_SPECIAL_CHARS));  ///////////////////////////////////////////////////
     }
 
     $search='%'.$originalSearch.'%';
@@ -48,9 +51,9 @@ else {
 
       if (($_POST['submit']=="Refine")&&($error==false)) {
         $refined=true;
-        $originalSearch= strtolower($_POST['originalSearch']);
+        $originalSearch= strtolower(filter_input(INPUT_POST,'originalSearch',FILTER_SANITIZE_SPECIAL_CHARS)); //////////////////////////////////////////////////////////////////////////////
         $search='%'.$originalSearch.'%';
-        $genre=$_POST['genre'];
+        $genre=filter_input(INPUT_POST,'genre',FILTER_VALIDATE_INT);                         ///////////////////////////////////////////////////////////////////////
         $newCreatorQuery="SELECT * FROM Creator WHERE GenreID = :genreA AND LOWER(UserName) LIKE :searchName OR  GenreID = :genreA AND LOWER(Description) LIKE :searchDescription";
         $newCreatorStatement=$db->prepare($newCreatorQuery);
         $newCreatorStatement->bindValue(':genreA',$genre);
