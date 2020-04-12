@@ -1,6 +1,8 @@
 <?php
 
 // SANITIZED ///////////////////////////////////////////////////////////////////////////////////////////////////////
+// HTML VALIDATED
+
 
 session_start();
 require('connect.php');
@@ -85,7 +87,7 @@ if($_POST){
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>PROCESS PAGE</title>
   </head>
   <body>
     <?php if($error==true): ?>
@@ -95,10 +97,10 @@ if($_POST){
         <form class="editPodcast" action="process.php" method="post">
           <p>Current Title: <?=$podcast['Title']?></p>
           <label for="editTitle">Edit Title:</label>
-          <input type="text" name="editTitle" value="<?=$podcast['Title']?>"><br><br>
+          <input type="text" id="editTitle" name="editTitle" value="<?=$podcast['Title']?>"><br><br>
           <p>Current Description: <?=$podcast['Description']?></p>
           <label for="editDescription">Edit Description</label>
-          <textarea name="editDescription" rows="8" cols="80"><?=$podcast['Description']?></textarea>
+          <textarea name="editDescription" id="editDescription" rows="8" cols="80"><?=$podcast['Description']?></textarea>
           <input type="text" name="currentPodcast" value="<?=$podcast['PodcastID']?>">
           <input class="btn btn-primary " type="submit" name="submit" value="Save Edit">
           <div class="genres">
@@ -112,6 +114,7 @@ if($_POST){
                 <?php endforeach; ?>
               <?php endif ?>
             </select>
+          </div>
         </form>
         <a href="profile.php?creator=<?=$_SESSION['userid']?>">Back to your Profile</a>
       <?php endif ?>

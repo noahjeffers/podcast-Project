@@ -1,7 +1,7 @@
 <?php
 
 // Sanitized //////////////////////////////////////////////////////////////
-
+// HTML VALIDATED
 
 session_start();
 require('connect.php');
@@ -90,10 +90,10 @@ if($_POST){
           <input type='file' name='podcast' id='podcast'>
 
           <label for="title">Episode Title: </label>
-          <input type="text" name="title" value="">
+          <input type="text" id="title" name="title" value="">
 
           <label for="description">Description:</label>
-          <textarea name="description" rows="8" cols="80"></textarea>
+          <textarea name="description" id="description" rows="8" cols="80"></textarea>
 
           <div class="genres">
             <select class="genre" name="genre">
@@ -127,6 +127,6 @@ if($_POST){
                     <p><?=$uploadquery?></p>
       <?php endif ?>
     <?php endif ?>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </body>
 </html>

@@ -1,6 +1,7 @@
 <?php
 
 // NOTHING TO SANITZE /////////////////////////////////////////////////////////////////////////////
+// NO HTML TO VALIDATE
 
 session_start();
 unset($_SESSION['username']);

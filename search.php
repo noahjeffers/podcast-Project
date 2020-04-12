@@ -1,6 +1,7 @@
 <?php
 
 // Sanitized //////////////////////////////////////////////////////////////////////////////
+//HTML VALIDATED
 
 require('connect.php');
 session_start();
@@ -183,7 +184,7 @@ else {
             <form class="" method="post">
               <ul class="nav justify-content">
                 <li class="nav-item">
-                  <input type="text" class="nav-link " name="originalSearch" value="<?=$originalSearch?>"></input><br>
+                  <input type="text" class="nav-link " name="originalSearch" value="<?=$originalSearch?>"><br>
                 </li>
                 <li class="nav-item">
                   <select class="nav-link" name="genre">
@@ -287,7 +288,7 @@ else {
               <?php endif ?>
             <?php endif ?>
 
-              </ul>
+
             </div>
           </div>
         </div>

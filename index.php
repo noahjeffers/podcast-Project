@@ -1,6 +1,6 @@
 <?php
 // SANITZED ////////////////////////////////////////////////////////////////////////////////////////////
-
+// HTML VALIDATED
 
 
 
@@ -137,7 +137,7 @@ body{
               </li>
             </ul>
             <form class="form-inline my-2 my-lg-0" action="search.php" method="post">
-              <input id="search"class="form-control mr-sm-2" name="search"type="search" placeholder="Search" aria-label="Search">
+              <input id="search" class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
               <input class="btn btn-outline-success my-2 my-sm-0" type="submit" name="submit" value="Search">
             </form>
           </div>

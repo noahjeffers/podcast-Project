@@ -1,6 +1,7 @@
 <?php
 
 // SANITZED ///////////////////////////////////////////////////////////////////////
+// HTML VALIDATED
 
 session_start();
 require('connect.php');
@@ -94,8 +95,8 @@ else{
               </li>
             </ul>
             <form class="form-inline my-2 my-lg-0" action="search.php" method="post">
-              <input id="search"class="form-control mr-sm-2" name="search"type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              <input id="search" class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
+              <input class="btn btn-outline-success my-2 my-sm-0" type="submit" name="submit" value="Search">
             </form>
           </div>
         </nav>
@@ -122,7 +123,7 @@ else{
         </div>
         <div class="form-group">
           <label for="content">Comment:</label>
-          <textarea class="form-control" id="content" name="content"rows="3"></textarea>
+          <textarea class="form-control" id="content" name="content" rows="3"></textarea>
         </div>
         <input type="submit" name="submit" value="Post Comment">
         <input type="hidden" name="podcastID" value="<?=$podcast['PodcastID']?>">
@@ -159,6 +160,7 @@ else{
 
       </div>
     </div>
+  </div>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>

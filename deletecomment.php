@@ -1,6 +1,7 @@
 <?php
 
 // SANITZED ////////////////////////////////////////////////////////////////////////////////////////////
+// HTML VALIDATED
 
 require('connect.php');
 session_start();
@@ -55,17 +56,9 @@ if (isset($_GET['commentid'])&&isset($_GET['podcastid'])) {
         <p>One of the values supplied is incorrect, please try again</p>
         <p><?=$_GET['commentid'] ?></p>
         <p><?=$_GET['podcastid'] ?></p>
-      <?php else: ?>
-        <p><?=$commentID?></p>
-        <p><?=$podcastID ?></p>
-      <?php endif ?>
-      <?php if ($success==true): ?>
-        <h1>SUCCESS</h1>
-      <?php else: ?>
-          <pre><?= print_r($statement)?></pre>
       <?php endif ?>
       <a href="profile.php?creator=<?=$_SESSION['username']?>">My Profile</a>
     </div>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </body>
 </html>

@@ -1,6 +1,7 @@
 <?php
 
 // NOTHING TO SANITZE ////////////////////////////////////////////////////////////////////////////////////////////
+// HTML VALIDATED
 
 session_start();
 require('connect.php');
@@ -44,9 +45,9 @@ $genreStatements->execute();
       <h3>User Creation</h3>
       <form class="createuseraccount" action="adminprocess.php" method="post">
         <label for="username">User Name:</label>
-        <input type="text" name="username" value="">
+        <input type="text" id="username" name="username" value="">
         <label for="password">Password:</label>
-        <input type="text" name="password" value="">
+        <input type="text" id="password" name="password" value="">
         <input type="submit" name="submit" value="Create New User">
       </form>
     </div>
@@ -60,7 +61,7 @@ $genreStatements->execute();
       </ul>
       <form class="" action="adminprocess.php" method="post">
         <label for="genre"></label>
-        <input type="text" name="genre" value="">
+        <input type="text" id="genre" name="genre" value="">
         <input type="submit" name="submit" value="Add Genre">
       </form>
     </div>
@@ -79,7 +80,7 @@ $genreStatements->execute();
           <?php endif ?>
         </select>
         <label for="editGenre">Edit Selected Genre:</label>
-        <input type="text" name="editGenre" value="">
+        <input type="text" id="editGenre" name="editGenre" value="">
         <input type="submit" name="submit" value="Edit Genre">
         <input type="submit" name="submit" value="Delete Genre">
       </form>
@@ -96,6 +97,6 @@ $genreStatements->execute();
         <?php endforeach ?>
       </ul>
     </div>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </body>
 </html>

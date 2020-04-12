@@ -1,6 +1,7 @@
 <?php
 
 // SANITZED ////////////////////////////////////////////////////////////////////////////////////////////
+// HTML VALIDATED
 
 session_start();
 require('connect.php');
@@ -100,7 +101,7 @@ if($_POST){
             <div class="card-body">
               <h5 class="card-title">New Description</h5>
               <p class="card-text">Max 2000 characters</p>
-                <h3 class="text-center"></h3>
+
                 <textarea name="description" rows="8" cols="30"><?=$_SESSION['description']?></textarea>
 
             </div>
@@ -126,22 +127,23 @@ if($_POST){
           </div>
         </div>
         <input class="btn btn-primary " type="submit" name="submit" value="Update your Account">
-        <a class="btn btn-warning "href="profile.php?creator=<?=$_SESSION['userid']?>">Cancel</a>
+        <a class="btn btn-warning " href="profile.php?creator=<?=$_SESSION['userid']?>">Cancel</a>
       </form>
       <div class="card">
         <div class="card-header">Upload an Image</div>
         <div class="card-body">
-          <form action="uploadimage.php"method='post' enctype='multipart/form-data'>
+          <form action="uploadimage.php" method='post' enctype='multipart/form-data'>
              <label for='image'>Image Filename:</label>
              <input type='file' name='image' id='image'>
-             <input class="btn btn-primary "type='submit' name='submit' value='Upload Image'>
-             <input class="btn btn-warning"type="submit" name="submit" value="Delete Image">
+             <input class="btn btn-primary " type='submit' name='submit' value='Upload Image'>
+             <input class="btn btn-warning" type="submit" name="submit" value="Delete Image">
          </form>
         </div>
     </div>
+  </div>
     <?php if($warning==true): ?>
       <?php echo "<script type='text/javascript'>alert('The name you have selected is invalid');</script>"; ?>
     <?php endif ?>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  </body>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</body>
 </html>
